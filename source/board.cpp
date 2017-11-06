@@ -1,5 +1,6 @@
 #include "board.hpp"
 
+
 void recordMovement(Movement move){
 	board[move.destination.line][move.destination.column] = board[move.origin.line][move.origin.column];
 	board[move.origin.line][move.origin.column] = EMPTY;
@@ -33,24 +34,27 @@ unsigned char toBlack(unsigned char piece){
 	return piece - 32;
 }
 
-Movement recognize(bool map[BOARD_SIZE][BOARD_SIZE]){
-	bool oldmap[BOARD_SIZE][BOARD_SIZE];
+Movement recognize(bitset<64> map){
+	bitset<64> oldmap;
 	for(int line = 0; line < BOARD_SIZE; line++){
 		for(int column = 0; column < BOARD_SIZE; column++){
-			oldmap[line][column] = board[line][column] != EMPTY;
+			oldmap = setBit(oldmap, board[line][column] != EMPTY, line, column);
 		}
 	}
-
+	cout << "oldmap" << endl;
 	printMap(oldmap);
+
+	cout << "map" << endl;
 	printMap(map);
+
+	bitset<64> modifications= map ^ oldmap;  //xor
+	bitset<64> origin = modifications & oldmap;
+
+	cout << "modifications" << endl;
+	printMap(modifications);
+
+	cout << "origin" << endl;
+	printMap(origin);
+
 }
 
-void printMap(bool map[BOARD_SIZE][BOARD_SIZE]){
-	for(int line = 0; line < BOARD_SIZE; line++){
-		for(int column = 0; column < BOARD_SIZE; column++){
-			cout << map[line][column] << ' ';
-		}
-		cout << endl;
-	}
-	cout << endl;	
-}

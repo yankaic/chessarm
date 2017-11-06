@@ -1,4 +1,5 @@
 #include "architecture.hpp"
+#include "Teste.cpp"
 
 int main(){
 	Position from;
@@ -20,15 +21,15 @@ int main(){
 	printBoard();
 
 
-	bool map[8][8] = {
-		1, 1, 1, 1, 1, 1, 1, 1,
-		0, 1, 1, 1, 1, 1, 1, 1,
-		1, 0, 0, 0, 0, 0, 0, 0, 
-		0, 0, 0, 0, 0, 0, 0, 0, 
-		0, 0, 0, 0, 0, 0, 0, 0, 
-		0, 0, 0, 0, 1, 0, 0, 0, 
-		1, 1, 1, 1, 0, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1
-	};
+	string mapstring = "";
+	mapstring += "11111111";
+	mapstring += "10111111";
+	mapstring += "01000000";
+	mapstring += "00000000";
+	mapstring += "00000000";
+	mapstring += "00000001";
+	mapstring += "11111110";
+	mapstring += "11111111";
+	bitset<64> map(mapstring);	
 	recognize(map);
 }

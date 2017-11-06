@@ -1,4 +1,6 @@
 #include <iostream>
+#include "bitmap.cpp"
+
 using namespace std;
 
 /*****************************************************************
@@ -14,7 +16,6 @@ const unsigned char QUEEN 	= 'q';
 const unsigned char KING 		= 'k';
 const unsigned char EMPTY 	=  0;
 
-#define BOARD_SIZE 8
 
 bool turn = false;
 
@@ -46,9 +47,7 @@ unsigned char toBlack(unsigned char piece);
 
 void recordMovement(Movement move);
 
-Movement recognize();
+Movement recognize(bitset<64> map);
 
-void printMap(bool map[BOARD_SIZE][BOARD_SIZE]);
 
-void printBoard();
 
