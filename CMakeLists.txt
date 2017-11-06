@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 project( ChessArm )
 find_package( OpenCV REQUIRED )
-add_executable( run ./source/CropImages.cpp )
+add_executable( run ./source/architecture.cpp )
 target_link_libraries( run ${OpenCV_LIBS} )
