@@ -51,5 +51,13 @@ Movement recognize(bitset<64> map);
 Position getOrigin(bitset<64> map);
 Position getMovement(bitset<64> map);
 
+Position getDestination(bitset<64> map);
+
+Position discoverMovement(Position origin);
+
+bitset<64> getPossibleMoves(Position origin);
+
+bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves);
+
 
 

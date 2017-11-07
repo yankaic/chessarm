@@ -70,3 +70,37 @@ Position getMovement(bitset<64> map){
 	return position;
 }
 
+
+Position getDestination(bitset<64> map){
+	bitset<64> oldmap;
+	for(int line = 0; line < BOARD_SIZE; line++){
+		for(int column = 0; column < BOARD_SIZE; column++){
+			oldmap = setBit(oldmap, board[line][column] != EMPTY, line, column);
+		}
+	}
+	bitset<64> modifications = map ^ oldmap;  //xor
+	bitset<64> destination = map & modifications;
+
+	int resultCount = count(destination);
+	if(resultCount == 1){
+		return getMovement(destination);
+	}
+	else if(resultCount == 0){
+
+	}
+	else{
+
+	}
+}
+
+Position discoverMovement(Position origin){
+
+}
+
+bitset<64> getPossibleMoves(Position origin){
+
+}
+
+bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
+	
+}
