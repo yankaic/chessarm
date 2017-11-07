@@ -35,26 +35,37 @@ unsigned char toBlack(unsigned char piece){
 }
 
 Movement recognize(bitset<64> map){
+	Position position = getOrigin(map);
+	printMap(map);
+	cout << "origin.line: " << position.line << endl;
+	cout << "origin.column: " << position.column << endl;
+}
+
+Position getOrigin(bitset<64> map){
 	bitset<64> oldmap;
 	for(int line = 0; line < BOARD_SIZE; line++){
 		for(int column = 0; column < BOARD_SIZE; column++){
 			oldmap = setBit(oldmap, board[line][column] != EMPTY, line, column);
 		}
 	}
-	cout << "oldmap" << endl;
-	printMap(oldmap);
-
-	cout << "map" << endl;
-	printMap(map);
-
 	bitset<64> modifications= map ^ oldmap;  //xor
 	bitset<64> origin = modifications & oldmap;
+	return getMovement(origin);
+}
 
-	cout << "modifications" << endl;
-	printMap(modifications);
-
-	cout << "origin" << endl;
-	printMap(origin);
-
+Position getMovement(bitset<64> map){
+	Position position;
+	for(int line = 0; line < BOARD_SIZE; line++){
+		for(int column = 0; column < BOARD_SIZE; column++){
+			if(getBit(map, line, column)){
+				position.line = line;
+				position.column = column;
+				return position;
+			}
+		}
+	}
+	position.line = -1;
+	position.column = -1;
+	return position;
 }
 

@@ -16,7 +16,6 @@ const unsigned char QUEEN 	= 'q';
 const unsigned char KING 		= 'k';
 const unsigned char EMPTY 	=  0;
 
-
 bool turn = false;
 
 struct Position{
@@ -48,6 +47,9 @@ unsigned char toBlack(unsigned char piece);
 void recordMovement(Movement move);
 
 Movement recognize(bitset<64> map);
+
+Position getOrigin(bitset<64> map);
+Position getMovement(bitset<64> map);
 
 
 
