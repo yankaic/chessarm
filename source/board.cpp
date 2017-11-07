@@ -50,6 +50,7 @@ Position getOrigin(bitset<64> map){
 	}
 	bitset<64> modifications= map ^ oldmap;  //xor
 	bitset<64> origin = modifications & oldmap;
+	cout << "quantidade: " << count(origin) << endl;
 	return getMovement(origin);
 }
 

@@ -14,3 +14,5 @@ bool getBit(bitset<64> map, int line, int column);
 void printMap(bitset<64> map);
 
 void printBoard();
+
+int count(bitset<64> map);

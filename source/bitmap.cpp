@@ -26,3 +26,12 @@ bitset<64> setBit(bitset<64> map, bool value, int line, int column){
 	map.set(line * BOARD_SIZE + column, value);
 	return map;
 }
+
+int count(bitset<64> map){
+	int counter = 0;
+	for(int i = 0; i < map.size(); i++){
+		if(map.test(i))
+			counter++;
+	}
+	return counter;
+}
