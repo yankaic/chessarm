@@ -1,27 +1,11 @@
 #include <iostream>
-#include "bitmap.cpp"
+#include "pieces.cpp"
 
 using namespace std;
 
-/*****************************************************************
-*	DEFINICAO DAS PECAS	
-* Pecas brancas sao definidas por letras minusculas e 
-*	pecas pretas sao definidas por letras maiusculas.
-* ****************************************************************/
-const unsigned char PAWN 		=	'p';
-const unsigned char ROOK 		= 'r';
-const unsigned char KNIGHT 	= 'h';
-const unsigned char BISHOP 	= 'b';
-const unsigned char QUEEN 	= 'q';
-const unsigned char KING 		= 'k';
-const unsigned char EMPTY 	=  0;
-
 bool turn = false;
 
-struct Position{
-	int line;
-	int column;
-};
+
 
 struct Movement{
 	Position origin;
@@ -58,6 +42,8 @@ Position discoverMovement(Position origin);
 bitset<64> getPossibleMoves(Position origin);
 
 bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves);
+
+
 
 
 

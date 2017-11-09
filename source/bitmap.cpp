@@ -23,7 +23,8 @@ bool getBit(bitset<64> map, int line, int column){
 
 
 bitset<64> setBit(bitset<64> map, bool value, int line, int column){
-	map.set(line * BOARD_SIZE + column, value);
+	if(line < BOARD_SIZE && column < BOARD_SIZE)
+		map.set(line * BOARD_SIZE + column, value);
 	return map;
 }
 

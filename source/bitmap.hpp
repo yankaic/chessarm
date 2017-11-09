@@ -1,5 +1,6 @@
-#include <bitset>   
+#include <bitset>  
 using namespace std;
+
 
 #define BOARD_SIZE 8 
 

@@ -102,5 +102,6 @@ bitset<64> getPossibleMoves(Position origin){
 }
 
 bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
+	unsigned char piece = board[origin.line][origin.column];
 	
 }
