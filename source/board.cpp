@@ -108,11 +108,33 @@ Position discoverMovement(Position origin){
 
 }
 
-bitset<64> getPossibleMoves(Position origin){
-
+bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
+	bitset<64> disjunction;
+	disjunction = getBit(playerOne, origin.line, origin.column) ? playerOne : playerTwo;
+	unsigned long possibleRepresentation = possibleMoves.to_ulong();
+	unsigned long disjunctionRepresentation = disjunction.to_ulong();
+	unsigned long availablesRepresentation = possibleRepresentation - disjunctionRepresentation;
+	bitset<64> availables (availablesRepresentation);
+	return availables;
 }
 
-bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
+bitset<64> getPossibleMoves(Position origin){
 	unsigned char piece = board[origin.line][origin.column];
-	
+	bitset<64> moves;
+	switch(piece){
+		case PAWN:
+			return getPawnMoves(origin, getBit(playerTwo, origin.line, origin.column));
+		case ROOK:
+			return getRookMoves(origin);
+		case KNIGHT:
+			return getKnightMoves(origin);
+		case BISHOP:
+			return getBishopMoves(origin);
+		case QUEEN:
+			return getQueenMoves(origin);
+		case KING:
+			return getKingMoves(origin);
+		default:
+			return moves;
+	}
 }
