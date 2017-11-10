@@ -39,6 +39,8 @@ bitset<64> getPossibleMoves(Position origin);
 
 bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves);
 
+bitset<64> getAvailableAttacks(Position origin, bitset<64> possibleMoves);
+
 
 
 
