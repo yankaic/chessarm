@@ -96,16 +96,21 @@ Position getDestination(bitset<64> map){
 	if(resultCount == 1){
 		return getMovement(destination);
 	}
-	else if(resultCount == 0){
-
-	}
-	else{
-
+	else {
+		return discoverMovement(getOrigin(map));
 	}
 }
 
 Position discoverMovement(Position origin){
-	
+	bitset<64> moves = getPossibleMoves(origin);
+	moves = getAvailableAttacks(origin, moves);
+	if(count(moves)==1){
+		return getMovement(moves);
+	}
+	Position location;
+	location.line = -1;
+	location.column = -1;
+	return location;
 }
 
 bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
