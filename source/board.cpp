@@ -4,7 +4,33 @@
 void recordMovement(Movement move){
 	board[move.destination.line][move.destination.column] = board[move.origin.line][move.origin.column];
 	board[move.origin.line][move.origin.column] = EMPTY;
-	turn = !turn;
+
+	bool fowardIsOne;
+	bitset<64> foward, defender;
+
+	if(getBit(playerOne, move.origin.line, move.origin.column)){		
+		foward = playerOne;
+		defender = playerTwo;
+		fowardIsOne = true;
+	}
+	else{
+		foward = playerTwo;
+		defender = playerOne;
+		fowardIsOne = false;
+	}
+
+	foward = clearBit(foward, move.origin.line, move.origin.column);		
+	foward = setBit(foward, move.destination.line, move.destination.column);
+	defender = clearBit(defender, move.destination.line, move.destination.column);	
+
+	if(fowardIsOne){
+		playerOne = foward;
+		playerTwo = defender;
+	}
+	else{
+		playerOne = defender;
+		playerTwo = foward;
+	}
 }
 
 void printBoard(){
@@ -22,17 +48,6 @@ void printBoard(){
 	cout << endl;
 }
 
-void initBlackPieces(){
-	for(int line = 0; line < BOARD_SIZE / 4; line++){
-		for(int column = 0; column < BOARD_SIZE; column++){
-			board[line][column] = toBlack(board[line][column]);
-		}
-	}
-}
-
-unsigned char toBlack(unsigned char piece){
-	return piece - 32;
-}
 
 Movement recognize(bitset<64> map){
 	Position position = getOrigin(map);
@@ -43,11 +58,7 @@ Movement recognize(bitset<64> map){
 
 Position getOrigin(bitset<64> map){
 	bitset<64> oldmap;
-	for(int line = 0; line < BOARD_SIZE; line++){
-		for(int column = 0; column < BOARD_SIZE; column++){
-			oldmap = setBit(oldmap, board[line][column] != EMPTY, line, column);
-		}
-	}
+	oldmap = getMap(board);
 	bitset<64> modifications= map ^ oldmap;  //xor
 	bitset<64> origin = modifications & oldmap;
 	cout << "quantidade: " << count(origin) << endl;

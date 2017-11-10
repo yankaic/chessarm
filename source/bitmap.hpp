@@ -4,6 +4,8 @@ using namespace std;
 
 #define BOARD_SIZE 8 
 
+bitset<64> getMap(unsigned char board[8][8]);
+
 bitset<64> setBit(bitset<64> map, int line, int column);
 
 bitset<64> setBit(bitset<64> map, bool value, int line, int column);

@@ -1,10 +1,9 @@
 #include "pieces.hpp"
 
-
-bitset<64> getPawnMoves(Position location, char color){
+bitset<64> getPawnMoves(Position location, bool isOpositive){
 	bitset<64> moves;
 	int lineIncrease = 1;
-	if(color == BLACK)
+	if(isOpositive)
 		lineIncrease = -1;	
 
 	moves = setBit(moves, location.line + lineIncrease, location.column + 1);
@@ -66,3 +65,4 @@ bitset<64> getKingMoves(Position location){
 	moves = clearBit(moves, location.line, location.column);
 	return moves;
 }
+

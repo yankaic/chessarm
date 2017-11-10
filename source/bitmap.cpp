@@ -36,3 +36,13 @@ int count(bitset<64> map){
 	}
 	return counter;
 }
+
+bitset<64> getMap(unsigned char board[8][8]){
+	bitset<64> map;
+	for(int line = 0; line < BOARD_SIZE; line++){
+		for(int column = 0; column < BOARD_SIZE; column++){
+			map = setBit(map, board[line][column] != 0, line, column);
+		}
+	}
+	return map;
+}

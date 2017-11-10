@@ -5,13 +5,10 @@ using namespace std;
 
 bool turn = false;
 
-
-
 struct Movement{
 	Position origin;
 	Position destination;
 };
-
 
 unsigned char board[BOARD_SIZE][BOARD_SIZE] = {
 	ROOK,		KNIGHT,	BISHOP,	QUEEN,	KING,		BISHOP,	KNIGHT,	ROOK,
@@ -24,9 +21,8 @@ unsigned char board[BOARD_SIZE][BOARD_SIZE] = {
 	ROOK,		KNIGHT,	BISHOP,	QUEEN,	KING,		BISHOP,	KNIGHT,	ROOK	
 };
 
-void initBlackPieces();
-
-unsigned char toBlack(unsigned char piece);
+bitset<64> playerOne(0x000000000000FFFF);
+bitset<64> playerTwo(0xFFFF000000000000);
 
 void recordMovement(Movement move);
 

@@ -14,12 +14,10 @@ int main(){
 	move.origin = from;
 	move.destination = to;
 
-	initBlackPieces();
 	printBoard();
 	recordMovement(move);
 	cout << endl;
 	printBoard();
-
 
 	string mapstring = "";
 	mapstring += "11111111";
