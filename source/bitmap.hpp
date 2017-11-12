@@ -1,5 +1,15 @@
 #include <bitset>  
+
+#ifndef BOARDINCLUDE
+#define BOARDINCLUDE
+#include "board.cpp"
+#endif
+
+#ifndef NAMESTD
+#define NAMESTD
+#include <iostream>
 using namespace std;
+#endif
 
 
 #define BOARD_SIZE 8 

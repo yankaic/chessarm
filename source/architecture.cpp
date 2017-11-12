@@ -1,7 +1,13 @@
-#include "architecture.hpp"
+
+// #include "board.cpp"
 #include "Teste.cpp"
 
 int main(){
+	test();	
+}
+
+
+void rodar(){
 	Position from;
 	from.column = 0;
 	from.line = 1;

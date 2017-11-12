@@ -1,7 +1,13 @@
-#include <iostream>
-#include "pieces.cpp"
 
+#ifndef PIECESINCLUDE
+#define PIECESINCLUDE
+#include "pieces.cpp"
+#endif
+
+#ifndef NAMESTD
+#include <iostream>
 using namespace std;
+#endif
 
 bool turn = false;
 

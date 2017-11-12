@@ -2,6 +2,11 @@
 #include <algorithm>  
 #include <ctype.h>
 
+#ifndef NAMESTD
+#define NAMESTD
+using namespace std;
+#endif
+
 struct Position{
 	int line;
 	int column;
