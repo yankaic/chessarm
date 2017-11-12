@@ -13,7 +13,7 @@ bitset<64> getPawnMoves(Position location, bool isOpositive){
 
 bitset<64> getRookMoves(Position location){	
 	bitset<64> moves;
-	for(int i; i < BOARD_SIZE; i++){
+	for(int i = 0; i < BOARD_SIZE; i++){
 		moves = setBit(moves, location.line, i);
 		moves = setBit(moves, i, location.column);
 	}
@@ -23,8 +23,10 @@ bitset<64> getRookMoves(Position location){
 
 bitset<64> getKnightMoves(Position location){	
 	bitset<64> moves;
-	for(int line = -2; line <= 2; line += 4){
-		for(int column = -2; column <= 2; column += 2){
+	for(int line = -2; line <= 2; line += 1){
+		for(int column = -2; column <= 2; column += 1){
+			if(abs(line)==abs(column) || line == 0 || column == 0)
+				continue;
 			moves = setBit(moves, location.line + line, location.column + column);
 		}
 	}
@@ -33,21 +35,24 @@ bitset<64> getKnightMoves(Position location){
 
 bitset<64> getBishopMoves(Position location){
 	bitset<64> moves;
+
+	//DIAGONAL PRINCIPAL
 	int increase = -1 * min(location.line, location.column);
 	
-	while(increase + location.line < BOARD_SIZE && increase + location.column < BOARD_SIZE){
+	while(abs(increase) < BOARD_SIZE){
 		moves =  setBit(moves, increase + location.line, increase + location.column);
 		increase++;
 	}
 
-	increase = location.column;
-	if(location.line + location.column >= BOARD_SIZE)
-		increase = 14 - location.line + location.column;
+	//DIAGONAL SECUNDARIA
+	increase = max(location.line, location.column);
+	
 
-	while(increase + location.line < BOARD_SIZE && increase + location.column < BOARD_SIZE){		
+	while(abs(increase)<BOARD_SIZE){		
 		moves = setBit(moves, increase + location.line, increase * (-1) + location.column);
 		increase--;
 	}
+	moves = clearBit(moves, location.line, location.column);
 	return moves;
 }
 

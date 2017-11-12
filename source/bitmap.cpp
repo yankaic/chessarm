@@ -2,7 +2,7 @@
 
 void printMap(bitset<64> map){
 	for(int index = 0; index < map.size(); index++){
-		cout << (map.test(index) ? '1' : '0') << ' ';
+		cout << (map.test(index) ? 'x' : '.') << ' ';
 		if((index+1) % BOARD_SIZE == 0)
 			cout << endl;
 	}
@@ -23,7 +23,7 @@ bool getBit(bitset<64> map, int line, int column){
 
 
 bitset<64> setBit(bitset<64> map, bool value, int line, int column){
-	if(line < BOARD_SIZE && column < BOARD_SIZE)
+	if(line < BOARD_SIZE && column < BOARD_SIZE && line >= 0 && column >= 0)
 		map.set(line * BOARD_SIZE + column, value);
 	return map;
 }
