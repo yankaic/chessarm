@@ -125,10 +125,9 @@ bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves){
 
 
 bitset<64> getAvailableAttacks(Position origin, bitset<64> possibleMoves){	
-	bitset<64> intersection;
-	intersection = getBit(playerOne, origin.line, origin.column) ? playerOne : playerTwo;
-	intersection = possibleMoves & intersection;
-	return intersection;
+	bitset<64> opponent;
+	opponent = getBit(playerOne, origin.line, origin.column) ? playerTwo : playerOne;
+	return possibleMoves & opponent;
 }
 
 bitset<64> getPossibleMoves(Position origin){
