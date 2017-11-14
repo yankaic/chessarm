@@ -40,6 +40,10 @@ void testMap(){
 	printMap(toString(bishopPieces));
 }
 
+void northTest(){
+	printMap(toString(northwestAttacks(0, getLocation(map(5,4)))));
+}
+
 void run(){
-	testCount();
+	northTest();
 }

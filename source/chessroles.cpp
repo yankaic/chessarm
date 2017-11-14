@@ -50,3 +50,68 @@ int count(Map map){
 	}
 	return count;
 }
+
+
+Map northAttacks(Map occupied, Square square){	
+	Vector vector;
+	vector.x = 0;
+	vector.y = 1;
+	return targetedAttacks(occupied, square, vector);
+}
+
+Map northeastAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = 1;
+	vector.y = 1;
+	return targetedAttacks(occupied, square, vector);
+}
+
+Map eastAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = 1;
+	vector.y = 0;
+	return targetedAttacks(occupied, square, vector);
+}
+Map southeastAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = 1;
+	vector.y = -1;
+	return targetedAttacks(occupied, square, vector);
+}
+Map southAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = 0;
+	vector.y = -1;
+	return targetedAttacks(occupied, square, vector);
+}
+Map southwestAttacks(Map occupied, Square square){	
+	Vector vector;
+	vector.x = -1;
+	vector.y = -1;
+	return targetedAttacks(occupied, square, vector);
+}
+Map westAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = -1;
+	vector.y = 0;
+	return targetedAttacks(occupied, square, vector);
+}
+Map northwestAttacks(Map occupied, Square square){
+	Vector vector;
+	vector.x = -1;
+	vector.y = 1;
+	return targetedAttacks(occupied, square, vector);
+}
+
+Map targetedAttacks	(Map occupied, Square square, Vector vector){
+	int scale = 1;
+	Map nextAttack, attacks = 0;
+	while(true){
+		nextAttack = map(square.line + vector.y * scale, square.column + vector.x * scale);
+		attacks = attacks | nextAttack;
+		if((nextAttack & occupied) == nextAttack)
+			return attacks;	
+		scale++;
+	}
+	return attacks;
+}
