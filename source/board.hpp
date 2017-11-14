@@ -1,53 +1,53 @@
 
-#ifndef PIECESINCLUDE
-#define PIECESINCLUDE
-#include "pieces.cpp"
-#endif
+typedef unsigned long long Map;
+#define BOARD_SIZE 8 
+#define OCCUPIED_SQUARES whitePieces | blackPieces
 
-#ifndef NAMESTD
-#include <iostream>
-using namespace std;
-#endif
+struct Square{
+	int line;
+	int column;
+};
 
-bool turn = false;
+struct Vector{
+	int x;
+	int y;
+};
 
 struct Movement{
-	Position origin;
-	Position destination;
+	Square origin;
+	Square destination;
 };
 
-unsigned char board[BOARD_SIZE][BOARD_SIZE] = {
-	ROOK,		KNIGHT,	BISHOP,	QUEEN,	KING,		BISHOP,	KNIGHT,	ROOK,
-	PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,
-	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,
-	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,
-	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,
-	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,	EMPTY,
-	PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,		PAWN,
-	ROOK,		KNIGHT,	BISHOP,	QUEEN,	KING,		BISHOP,	KNIGHT,	ROOK	
-};
+Map whitePieces = 0x0;
+Map blackPieces = 0x0;
 
-bitset<64> playerOne(0x000000000000FFFF);
-bitset<64> playerTwo(0xFFFF000000000000);
+Map pawnPieces = 0x0;
+Map rookPieces = 0x0;
+Map bishopPieces = 0x0;
+Map knightPieces = 0x0;
+Map queenPieces = 0x0;
+Map kingPieces = 0x0;
 
-void recordMovement(Movement move);
+Map 		map(int line, int column); 
+Map 		map(Square square);  
+Square 	getLocation(Map map);
+void 		print(Map map);  
+int 		count(Map map);  
 
-Movement recognize(bitset<64> map);
+Map northAttacks		(Map occupied, Square square);
+Map northeastAttacks(Map occupied, Square square);
+Map eastAttacks			(Map occupied, Square square);
+Map southeastAttacks(Map occupied, Square square); 
+Map southAttacks		(Map occupied, Square square);
+Map southwestAttacks(Map occupied, Square square);
+Map westAttacks			(Map occupied, Square square);
+Map northwestAttacks(Map occupied, Square square);
+Map targetedAttacks	(Map occupied, Square square, Vector direction);
 
-Position getOrigin(bitset<64> map);
-Position getMovement(bitset<64> map);
-
-Position getDestination(bitset<64> map);
-
-Position discoverMovement(Position origin);
-
-bitset<64> getPossibleMoves(Position origin);
-
-bitset<64> getAvailableMoves(Position origin, bitset<64> possibleMoves);
-
-bitset<64> getAvailableAttacks(Position origin, bitset<64> possibleMoves);
-
-
-
-
+Map pawnAttacks			(Map occupied, Square square);
+Map rookAttacks    	(Map occupied, Square square);
+Map bishopAttacks  	(Map occupied, Square square); 
+Map knightAttacks		(Map occupied, Square square); 
+Map queenAttacks   	(Map occupied, Square square);
+Map kingAttacks   	(Map occupied, Square square);
 
