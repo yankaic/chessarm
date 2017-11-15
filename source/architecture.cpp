@@ -13,11 +13,11 @@ int main(){
 }
 
 void printMap(char* text){	
-	std::cout << "line: " << text << std::endl;
+	std::cout << "linear: " << text << std::endl;
 	for(int line = 0; line < BOARD_SIZE; line++){
-		for(int column = BOARD_SIZE-1; column >= 0; column--){
-			char ch = text[line*BOARD_SIZE+column];
-			std::cout << (ch == '1'? " X" : " ·");
+		for(int column = BOARD_SIZE - 1; column >= 0; column--){
+			char ch = text[line * BOARD_SIZE + column];
+			std::cout << (ch == '1'? " *" : " ·");
 		}		
 		std::cout << std::endl;
 	}
@@ -37,13 +37,21 @@ void testBitmap(){
 }
 
 void testMap(){
-	printMap(toString(bishopPieces));
+	printMap(toString(occupiedSquares));
 }
 
 void northTest(){
-	printMap(toString(northwestAttacks(0, getLocation(map(5,4)))));
+	printMap(toString(northwestAttacks(0, getLocation(map(3,6)))));
+}
+
+void piecesTest(){
+	printMap(toString(bishopAttacks(0, getLocation(map(3,3)))));
+}
+
+void pawnAttackTest(){
+	printMap(toString(pawnAttacks(0, getLocation(map(1,6)),true)));
 }
 
 void run(){
-	northTest();
+	piecesTest();
 }

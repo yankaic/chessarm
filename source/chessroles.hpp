@@ -1,6 +1,8 @@
 typedef unsigned long Map;
 #define BOARD_SIZE 8 
 
+#include <cmath>
+
 struct Square{
 	int line;
 	int column;
@@ -27,7 +29,7 @@ Map westAttacks			(Map occupied, Square square);
 Map northwestAttacks(Map occupied, Square square);
 Map targetedAttacks	(Map occupied, Square square, Vector direction);
 
-Map pawnAttacks			(Map occupied, Square square);
+Map pawnAttacks			(Map occupied, Square square, bool isWhite);
 Map rookAttacks    	(Map occupied, Square square);
 Map bishopAttacks  	(Map occupied, Square square); 
 Map knightAttacks		(Map occupied, Square square); 

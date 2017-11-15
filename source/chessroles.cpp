@@ -106,12 +106,68 @@ Map northwestAttacks(Map occupied, Square square){
 Map targetedAttacks	(Map occupied, Square square, Vector vector){
 	int scale = 1;
 	Map nextAttack, attacks = 0;
-	while(true){
+
+	do{
 		nextAttack = map(square.line + vector.y * scale, square.column + vector.x * scale);
-		attacks = attacks | nextAttack;
-		if((nextAttack & occupied) == nextAttack)
-			return attacks;	
+		attacks |= nextAttack;
 		scale++;
+	}while((nextAttack & occupied) != nextAttack); //ate encontrar um obstaculo ou sair do tabuleiro
+
+	return attacks;	
+}
+
+Map pawnAttacks	(Map occupied, Square square, bool isWhite){
+	int yGap = isWhite ? 1 : -1;
+	Map attacks = map(square.line + yGap, square.column -1);
+	attacks |= map(square.line + yGap, square.column +1);
+	return attacks;
+}
+
+Map rookAttacks(Map occupied, Square square){
+	Map attacks = northAttacks(occupied, square);
+	attacks |= eastAttacks(occupied, square);
+	attacks |= southAttacks(occupied, square);
+	attacks |= westAttacks(occupied, square);
+	return attacks;
+}
+
+Map bishopAttacks(Map occupied, Square square){
+	Map attacks = northeastAttacks(occupied, square);
+	attacks |= southeastAttacks(occupied, square);
+	attacks |= southwestAttacks(occupied, square);
+	attacks |= northwestAttacks(occupied, square);
+	return attacks;
+}
+
+Map knightAttacks(Map occupied, Square square){
+	Vector vect;
+	Map attacks = 0, nextAttack;
+	for(vect.x = -2; vect.x <= 2; vect.x++){
+		for(vect.y = -2; vect.y <= 2; vect.y++){
+			if(std::abs(vect.x) + std::abs(vect.y) == 3){
+				nextAttack = map(square.line + vect.y, square.column + vect.x);
+				attacks |= nextAttack;
+			}
+		}
 	}
+	return attacks;
+}
+Map queenAttacks(Map occupied, Square square){
+	Map attacks = rookAttacks(occupied, square);
+	attacks |= bishopAttacks(occupied, square);
+	return attacks;
+}
+
+Map kingAttacks(Map occupied, Square square){
+	Vector vect;
+	Map attacks = 0, nextAttack;
+	for(vect.x = -1; vect.x < 2; vect.x++){
+		for(vect.y = -1; vect.y < 2; vect.y++){
+			nextAttack = map(square.line + vect.y, square.column + vect.x);
+			attacks |= nextAttack;
+		}
+	}
+	 Map itself = map(square);
+	 attacks -= itself;
 	return attacks;
 }
