@@ -17,7 +17,12 @@ void printMap(char* text){
 	for(int line = 0; line < BOARD_SIZE; line++){
 		for(int column = BOARD_SIZE - 1; column >= 0; column--){
 			char ch = text[line * BOARD_SIZE + column];
-			std::cout << (ch == '1'? " *" : " ·");
+			if(ch == '1')
+				std::cout << " *";
+			else if (ch == '0')				
+				std::cout << " ·";
+			else						
+				std::cout << ' ' << ch;
 		}		
 		std::cout << std::endl;
 	}
@@ -52,6 +57,10 @@ void pawnAttackTest(){
 	printMap(toString(pawnAttacks(0, getLocation(map(1,6)),true)));
 }
 
+void boardPrintTest(){
+	printMap(boardString());
+}
+
 void run(){
-	piecesTest();
+	boardPrintTest();
 }

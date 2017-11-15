@@ -3,7 +3,6 @@
 #include "chessroles.cpp"
 #endif
 
-
 #define occupiedSquares ((whitePieces | blackPieces))
 
 struct Movement{
@@ -20,6 +19,10 @@ Map knightPieces	= 0x4200000000000042;
 Map bishopPieces 	= 0x2400000000000024;
 Map kingPieces 		= 0x1000000000000010;
 Map queenPieces 	= 0x0800000000000008;
+
+void recordMovement(Movement move); 
+
+char* boardString();
 
 
 

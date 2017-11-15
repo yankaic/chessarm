@@ -1,7 +1,6 @@
 
-void recordMovement(Movement move); //ok
 
-Movement recognize(bitset<64> map);
+
 
 Position getOrigin(bitset<64> map); //ok
 Position getMovement(bitset<64> map);

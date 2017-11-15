@@ -1,16 +1,26 @@
 #include "chessroles.hpp"
 
-char* toString(Map map){
-	int i = 63;
-	char* text = new char[65];
-	text[64] = '\0';
+char* toString(Map map, char* text, char ch){
+	int i = 63;	
 	Map mostSig = 0x8000000000000000;
 
 	for(int i = 0; i < 64; i++){
-		text[i] = (map & mostSig) !=0 ? '1' : '0';
+		text[i] = (map & mostSig) != 0 ? ch : text[i];
 		map = map << 1;
 	}
 	return text;
+}
+
+char* emptyString(){
+	char* text = new char[65];
+	text[64] = '\0';
+	for(int i = 0; i < 64; i++)
+		text[i] = '0';
+	return text;
+}
+
+char* toString(Map map){	
+	return toString(map,emptyString(),'1');
 }
 
 Map map(int line, int column){
@@ -51,7 +61,6 @@ int count(Map map){
 	return count;
 }
 
-
 Map northAttacks(Map occupied, Square square){	
 	Vector vector;
 	vector.x = 0;
@@ -72,30 +81,35 @@ Map eastAttacks(Map occupied, Square square){
 	vector.y = 0;
 	return targetedAttacks(occupied, square, vector);
 }
+
 Map southeastAttacks(Map occupied, Square square){
 	Vector vector;
 	vector.x = 1;
 	vector.y = -1;
 	return targetedAttacks(occupied, square, vector);
 }
+
 Map southAttacks(Map occupied, Square square){
 	Vector vector;
 	vector.x = 0;
 	vector.y = -1;
 	return targetedAttacks(occupied, square, vector);
 }
+
 Map southwestAttacks(Map occupied, Square square){	
 	Vector vector;
 	vector.x = -1;
 	vector.y = -1;
 	return targetedAttacks(occupied, square, vector);
 }
+
 Map westAttacks(Map occupied, Square square){
 	Vector vector;
 	vector.x = -1;
 	vector.y = 0;
 	return targetedAttacks(occupied, square, vector);
 }
+
 Map northwestAttacks(Map occupied, Square square){
 	Vector vector;
 	vector.x = -1;
@@ -111,7 +125,7 @@ Map targetedAttacks	(Map occupied, Square square, Vector vector){
 		nextAttack = map(square.line + vector.y * scale, square.column + vector.x * scale);
 		attacks |= nextAttack;
 		scale++;
-	}while((nextAttack & occupied) != nextAttack); //ate encontrar um obstaculo ou sair do tabuleiro
+	}while((nextAttack & occupied) != nextAttack); //continua enquanto não encontrar obstaculo ou não sair do tabuleiro
 
 	return attacks;	
 }
@@ -152,6 +166,7 @@ Map knightAttacks(Map occupied, Square square){
 	}
 	return attacks;
 }
+
 Map queenAttacks(Map occupied, Square square){
 	Map attacks = rookAttacks(occupied, square);
 	attacks |= bishopAttacks(occupied, square);

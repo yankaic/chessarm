@@ -16,7 +16,9 @@ struct Vector{
 Map 		map(int line, int column); //ok
 Map 		map(Square square);   //ok
 Square 	getLocation(Map map); //ok
+char* 	toString(Map map, char* text, char ch);
 char*		toString(Map map);   //ok
+char* 	emptyString();
 int 		count(Map map);   //ok
 
 Map northAttacks		(Map occupied, Square square);
