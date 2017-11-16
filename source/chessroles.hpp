@@ -20,6 +20,7 @@ char* 	toString(Map map, char* text, char ch);
 char*		toString(Map map);   //ok
 char* 	emptyString();
 int 		count(Map map);   //ok
+bool 		contains(Map map1, Map map2);
 
 Map northAttacks		(Map occupied, Square square);
 Map northeastAttacks(Map occupied, Square square);

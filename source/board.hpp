@@ -23,6 +23,8 @@ Map queenPieces 	= 0x0800000000000008;
 void recordMovement(Movement move); 
 
 char* boardString();
+char* whiteString();
+char* blackString();
 
 
 

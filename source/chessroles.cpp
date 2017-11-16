@@ -38,6 +38,10 @@ Map map(Square square){
 	return bit << shift;
 } 
 
+bool contains(Map map1, Map map2){
+	return (map1 & map2) != 0;
+}
+
 Square getLocation(Map map){
 	int count = -1;
 	while(map != 0){

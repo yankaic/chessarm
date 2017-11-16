@@ -1,7 +1,40 @@
 #include "board.hpp"
 
 void recordMovement(Movement move){
+	//precisa descobrir quem vai ceder lugar para o movimentador.
+	Map origin = map(move.origin);
+	Map destination = map(move.destination);
 
+	if(contains(whitePieces, origin))
+		whitePieces |= destination;
+
+	if(contains(blackPieces, origin))
+		blackPieces |= destination;
+
+	if(contains(pawnPieces, origin))
+		pawnPieces |= destination;
+
+	if(contains(rookPieces, origin))
+		rookPieces |= destination;
+
+	if(contains(knightPieces, origin))
+		knightPieces |= destination;
+
+	if(contains(bishopPieces, origin))
+		bishopPieces |= destination;
+
+	if(contains(queenPieces, origin))
+		queenPieces |= destination;
+
+	whitePieces &= ~origin;
+	blackPieces &= ~origin;
+
+	pawnPieces &= ~origin;
+	rookPieces &= ~origin;
+	knightPieces &= ~origin;
+	bishopPieces &= ~origin;
+	queenPieces &= ~origin;
+	kingPieces &= ~origin;
 }
 
 char* boardString(){	

@@ -38,7 +38,7 @@ void testLocation(){
 }
 
 void testBitmap(){
-	printMap(toString(map(9,7)));
+	printMap(toString(~map(7,7)));
 }
 
 void testMap(){
@@ -61,6 +61,18 @@ void boardPrintTest(){
 	printMap(boardString());
 }
 
+void movimentTest(){
+	Movement move;
+	move.origin = getLocation(map(1,1));
+	move.destination = getLocation(map(7,1));
+	recordMovement(move);
+	printMap(boardString());
+
+	std::cout << std::endl << "Peoes: ";
+	printMap(toString(pawnPieces));	
+	printMap(toString(map(move.destination)));
+}
+
 void run(){
-	boardPrintTest();
+	movimentTest();
 }
