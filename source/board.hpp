@@ -3,7 +3,7 @@
 #include "chessroles.cpp"
 #endif
 
-
+// indices para o tabuleiro abaixo
 #define WHITE 	0
 #define BLACK 	1
 #define PAWN 		2
@@ -14,11 +14,6 @@
 #define KING 		7
 #define occupiedSquares ((pieces[WHITE] | pieces[BLACK]))
 
-struct Movement{
-	Square origin;
-	Square destination;
-};
-
 Map pieces[8] = {
 	0x000000000000FFFF,	//white
 	0xFFFF000000000000,	//black
@@ -28,6 +23,11 @@ Map pieces[8] = {
 	0x2400000000000024,	//bishop
 	0x0800000000000008,	//queen
 	0x1000000000000010	//king
+};
+
+struct Movement{
+	Square origin;
+	Square destination;
 };
 
 
@@ -45,6 +45,9 @@ Map* queenPieces 		= &pieces[QUEEN];
 Map* kingPieces 		= &pieces[KING];
 
 void recordMovement(Movement move); 
+
+int pieceType(Square Square);
+int pieceColor(Square);
 
 char* boardString();
 char* whiteString();

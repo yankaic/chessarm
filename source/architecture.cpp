@@ -1,6 +1,7 @@
 #include<iostream>
 #include "Test.cpp"
 #include "board.cpp"
+#include "recognizer.cpp"
 void run();
 
 
@@ -78,6 +79,20 @@ void testPointer(){
 	printMap(toString(pieces[ROOK]));
 }
 
+void recognizeTest(){
+	Movement move;
+	move.origin = getLocation(map(6,1));
+	move.destination = getLocation(map(5,1));
+	recordMovement(move);
+	move.origin = getLocation(map(0,3));
+	move.destination = getLocation(map(3,4));
+	recordMovement(move);
+	printMap(boardString());
+
+	Map attacks = availableAttacks(move.destination);
+	printMap(toString(attacks));
+}
+
 void run(){
-	movimentTest();
+	recognizeTest();
 }

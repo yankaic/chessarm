@@ -1,23 +1,30 @@
 #include "board.hpp"
 
 void recordMovement(Movement move){
-	//precisa descobrir quem vai ceder lugar para o movimentador.
 	Map origin = map(move.origin);
 	Map destination = map(move.destination);
 
-	int piece, color;
-	for(piece = PAWN; piece <= KING && !contains(pieces[piece], origin); piece++){}
-	color = contains(pieces[WHITE], origin) ? WHITE : BLACK;
+	int offensive = pieceType(move.origin);
+	int color = pieceColor(move.origin);
 
-	pieces[piece] |= destination;
+	pieces[offensive] |= destination;
 	pieces[color] |= destination;
 
-	int offensive = piece;
-	for(piece = WHITE; piece <= KING; piece++){		
+	for(int piece = WHITE; piece <= KING; piece++){		
  		if(!(piece == offensive || piece == color))
 			pieces[piece] &= ~destination;
 		pieces[piece] &= ~origin;		
 	}
+}
+
+int pieceType(Square square){
+	int piece;
+	for(piece = PAWN; piece <= KING && !contains(pieces[piece], map(square)); piece++){}
+	return piece;
+}
+
+int pieceColor(Square square){
+	return contains(pieces[WHITE], map(square)) ? WHITE : BLACK;
 }
 
 char* boardString(){	
