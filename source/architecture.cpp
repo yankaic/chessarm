@@ -69,10 +69,14 @@ void movimentTest(){
 	printMap(boardString());
 
 	std::cout << std::endl << "Peoes: ";
-	printMap(toString(pawnPieces));	
+	printMap(toString(pieces[PAWN]));	
 	printMap(toString(map(move.destination)));
 }
 
+void testPointer(){
+	printMap(toString(pieces[ROOK]));
+}
+
 void run(){
-	movimentTest();
+	testPointer();
 }
