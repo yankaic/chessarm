@@ -66,11 +66,12 @@ void movimentTest(){
 	move.origin = getLocation(map(1,1));
 	move.destination = getLocation(map(7,1));
 	recordMovement(move);
-	printMap(boardString());
 
+	printMap(boardString());
 	std::cout << std::endl << "Peoes: ";
 	printMap(toString(pieces[PAWN]));	
-	printMap(toString(map(move.destination)));
+	printMap(toString(pieces[WHITE]));
+	printMap(toString(pieces[BLACK]));
 }
 
 void testPointer(){
@@ -78,5 +79,5 @@ void testPointer(){
 }
 
 void run(){
-	testPointer();
+	movimentTest();
 }

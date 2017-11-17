@@ -5,36 +5,19 @@ void recordMovement(Movement move){
 	Map origin = map(move.origin);
 	Map destination = map(move.destination);
 
-	if(contains(pieces[WHITE], origin))
-		pieces[WHITE] |= destination;
+	int piece, color;
+	for(piece = PAWN; piece <= KING && !contains(pieces[piece], origin); piece++){}
+	color = contains(pieces[WHITE], origin) ? WHITE : BLACK;
 
-	if(contains(pieces[BLACK], origin))
-		pieces[BLACK] |= destination;
+	pieces[piece] |= destination;
+	pieces[color] |= destination;
 
-	if(contains(pieces[PAWN], origin))
-		pieces[PAWN] |= destination;
-
-	if(contains(pieces[ROOK], origin))
-		pieces[ROOK] |= destination;
-
-	if(contains(pieces[KNIGHT], origin))
-		pieces[KNIGHT] |= destination;
-
-	if(contains(pieces[BISHOP], origin))
-		pieces[BISHOP] |= destination;
-
-	if(contains(pieces[QUEEN], origin))
-		pieces[QUEEN] |= destination;
-
-	pieces[WHITE] &= ~origin;
-	pieces[BLACK] &= ~origin;
-
-	pieces[PAWN] &= ~origin;
-	pieces[ROOK] &= ~origin;
-	pieces[KNIGHT] &= ~origin;
-	pieces[BISHOP] &= ~origin;
-	pieces[QUEEN] &= ~origin;
-	pieces[KING] &= ~origin;
+	int offensive = piece;
+	for(piece = WHITE; piece <= KING; piece++){		
+ 		if(!(piece == offensive || piece == color))
+			pieces[piece] &= ~destination;
+		pieces[piece] &= ~origin;		
+	}
 }
 
 char* boardString(){	
