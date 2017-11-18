@@ -1,11 +1,12 @@
 Movement movement(Map newoccupation){
-
+	Map modifications = occupiedSquares ^ newoccupation;
+	Map originmap = modifications & occupiedSquares;
 }
 
 Map availableAttacks(Square origin){
 	int type = pieceType(origin);
 	int color = pieceColor(origin);
-	int otherColor = 1 - color;
+	int opponent = 1 - color;
 
 	Map attacks;
 	switch(type){
@@ -36,6 +37,5 @@ Map availableAttacks(Square origin){
 		default:
 			attacks = 0;
 	}
-
-	return attacks & pieces[otherColor];	//ataca apenas pecas do oponente
+	return attacks & pieces[opponent];	//ataca apenas pecas do oponente
 }

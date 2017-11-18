@@ -93,6 +93,19 @@ void recognizeTest(){
 	printMap(toString(attacks));
 }
 
+void recognTest(){
+	Map newoccupation = 0xFFFF00000001FEFF;
+	Map modifications = occupiedSquares ^ newoccupation;
+	Map originmap = modifications & occupiedSquares;
+	Map destinationmap = modifications ^ originmap;
+
+	printMap(toString(occupiedSquares));
+	printMap(toString(newoccupation));
+	printMap(toString(modifications));
+	printMap(toString(originmap));
+	printMap(toString(destinationmap));
+}
+
 void run(){
-	recognizeTest();
+	recognTest();
 }
