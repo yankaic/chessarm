@@ -1,17 +1,7 @@
 #include<iostream>
-#include "Test.cpp"
 #include "board.cpp"
 #include "recognizer.cpp"
-void run();
-
-
-int main(){
-	bool debugMode = false;
-	if(debugMode)
-		test();
-	else
-		run();	
-}
+#include "kinematics.cpp"
 
 void printMap(char* text){	
 	std::cout << "linear: " << text << std::endl;
@@ -106,6 +96,21 @@ void recognTest(){
 	printMap(toString(destinationmap));
 }
 
-void run(){
-	recognTest();
+void kinematicsTest(){
+	using namespace std;
+	Point3D location;
+	location.x = 14;
+	location.y = 60;
+	location.z = 16;
+
+	supportTest(location);
+	cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
+	cout << "base: " << baseAngle(location) << endl;
+	cout << "ombro: " << shoulderAngle(location) << endl;
+	cout << "cotovelo: " << elbowAngle(location) << endl;
+	cout << "pulso: " << wristAngle(location) << endl;
+}
+
+int main(){
+	kinematicsTest();
 }

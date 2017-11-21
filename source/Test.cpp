@@ -1,5 +1,5 @@
+#include <iostream>
 
-
-void test(){
-	
+int  main(){
+	std::cout << "modo teste" << std::endl;
 }
