@@ -1,5 +1,6 @@
 #include "chessroles.hpp"
 
+
 char* toString(Map map, char* text, char ch){
 	int i = 63;	
 	Map mostSig = 0x8000000000000000;

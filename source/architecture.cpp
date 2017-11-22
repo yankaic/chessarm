@@ -1,7 +1,16 @@
 #include<iostream>
+
+#ifndef BOARDLIB
+#define BOARDLIB
 #include "board.cpp"
+#endif
+
+#ifndef RECOGNIZERLIB
+#define RECOGNIZERLIB
 #include "recognizer.cpp"
-#include "kinematics.cpp"
+#endif
+
+#include "movecontrol.cpp"
 
 void printMap(char* text){	
 	std::cout << "linear: " << text << std::endl;
@@ -111,6 +120,15 @@ void kinematicsTest(){
 	cout << "pulso: " << wristAngle(location) << endl;
 }
 
+void moveTest(){
+	Square square;
+	square.line = 0;
+	square.column = 4;
+	Point3D location = point(square, true);
+	using namespace std;
+	cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
+}
+
 int main(){
-	kinematicsTest();
+	moveTest();
 }

@@ -19,11 +19,15 @@ float elbow = ELBOW_DEFAULT;
 float wrist = WRIST_DEFAULT;
 float claw = CLAW_DEFAULT;
 
-struct Point3D{
+#ifndef POINT3D 
+#define POINT3D 
+struct P3D{
 	double x;
 	double y;
 	double z;
 };
+typedef struct P3D Point3D;
+#endif
 
 bool supportTest(Point3D coordinate);
 
