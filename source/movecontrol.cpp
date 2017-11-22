@@ -12,6 +12,33 @@ Point3D point(Square square, bool high){
 	return location;
 }	
 
+
+Point3D* intercalate(Point3D origin, Point3D destination, const double seconds){
+	Point3D difference;
+	difference.x = destination.x - origin.x;
+	difference.y = destination.y - origin.y;
+	difference.z = destination.z - origin.z;
+
+	Point3D point;
+	const int frequency = 30;
+	Point3D *pointers = new Point3D[(int)(frequency * seconds)]; 
+
+	double scale = 0, increment = 1.0 / (frequency * seconds);
+
+	for(int i = 0; scale <= 1; scale += increment, i++){
+		point.x = origin.x + difference.x * scale;
+		point.y = origin.y + difference.y * scale;
+		point.z = origin.z + difference.z * scale;
+		pointers[i] = point;
+	}
+	point.x = origin.x + difference.x * scale;
+	point.y = origin.y + difference.y * scale;
+	point.z = origin.z + difference.z * scale;
+	pointers[(int)(frequency * seconds) -1] = point;
+
+	return pointers;
+}
+
 void move(Movement move){
 	
 }

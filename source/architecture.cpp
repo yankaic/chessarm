@@ -126,9 +126,23 @@ void moveTest(){
 	square.column = 4;
 	Point3D location = point(square, true);
 	using namespace std;
-	cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
+	cout << "x=" << location.x << "\ty=" << location.y << "\tz=" << location.z << endl;
+}
+
+void moveArrayTest(){
+	Square origin = getLocation(map(0,0));
+	Square destination = getLocation(map(7,7));
+	Point3D from = point(origin, true);
+	Point3D to = point(destination, true);
+	Point3D *points = intercalate(from, to,2.0);
+
+	using namespace std;
+	for(int i = 0; i < 60; i++){
+		Point3D location = points[i];
+		cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
+	}
 }
 
 int main(){
-	moveTest();
+	moveArrayTest();
 }
