@@ -67,8 +67,26 @@ void move(Movement move){
 	attackPath 				= intercalate(destinationHigh,	destination, 			attackSeconds);
 	returnAttackPath	= intercalate(destination, 			destinationHigh, 	returnAttackSeconds);
 	returnInitialPath = intercalate(destinationHigh, 	initialPosition, 	returnInitialSeconds);
+
+	const bool OPENED_CLAW = true;
+	const bool CLOSED_CLAW = !OPENED_CLAW;
+
+	runPath(prepareTakePath, OPENED_CLAW);
+	runPath(takePath, OPENED_CLAW);
+	runPath(returnTakePath, CLOSED_CLAW);
+	runPath(prepareAttackPath, CLOSED_CLAW);
+	runPath(attackPath, CLOSED_CLAW);
+	runPath(returnAttackPath, OPENED_CLAW);
+	runPath(returnInitialPath, OPENED_CLAW);
 }
 
-void runPath(Point3D *path, bool clawOpened){
-	
+void runPath(Point3D *path, int size, bool claw){
+	float  base,  shoulder,  elbow,  wrist;
+	for(int i = 0; i < size; i++){
+		base = baseAngle(path[i]);
+		shoulder = shoulderAngle(path[i]);
+		elbow = elbowAngle(path[i]);
+		wrist = wristAngle(path[i]);
+		runAngles(base, shoulder, elbow, wrist, claw);
+	}
 }
