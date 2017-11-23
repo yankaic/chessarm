@@ -20,10 +20,9 @@ Point3D* intercalate(Point3D origin, Point3D destination, const double seconds){
 	difference.z = destination.z - origin.z;
 
 	Point3D point;
-	const int frequency = 30;
-	Point3D *pointers = new Point3D[(int)(frequency * seconds)]; 
+	Point3D *pointers = new Point3D[(int)(FREQUENCY * seconds)]; 
 
-	double scale = 0, increment = 1.0 / (frequency * seconds);
+	double scale = 0, increment = 1.0 / (FREQUENCY * seconds);
 
 	for(int i = 0; scale <= 1; scale += increment, i++){
 		point.x = origin.x + difference.x * scale;
@@ -34,7 +33,7 @@ Point3D* intercalate(Point3D origin, Point3D destination, const double seconds){
 	point.x = origin.x + difference.x * scale;
 	point.y = origin.y + difference.y * scale;
 	point.z = origin.z + difference.z * scale;
-	pointers[(int)(frequency * seconds) -1] = point;
+	pointers[(int)(FREQUENCY * seconds) -1] = point;
 
 	return pointers;
 }
@@ -71,13 +70,13 @@ void move(Movement move){
 	const bool OPENED_CLAW = true;
 	const bool CLOSED_CLAW = !OPENED_CLAW;
 
-	runPath(prepareTakePath, OPENED_CLAW);
-	runPath(takePath, OPENED_CLAW);
-	runPath(returnTakePath, CLOSED_CLAW);
-	runPath(prepareAttackPath, CLOSED_CLAW);
-	runPath(attackPath, CLOSED_CLAW);
-	runPath(returnAttackPath, OPENED_CLAW);
-	runPath(returnInitialPath, OPENED_CLAW);
+	runPath(prepareTakePath,		prepareTakeSeconds * FREQUENCY,		OPENED_CLAW);
+	runPath(takePath, 					takeSeconds * FREQUENCY,					OPENED_CLAW);
+	runPath(returnTakePath, 		returnTakeSeconds * FREQUENCY,		CLOSED_CLAW);
+	runPath(prepareAttackPath,	prepareAttackSeconds * FREQUENCY,	CLOSED_CLAW);
+	runPath(attackPath, 				attackSeconds * FREQUENCY, 				CLOSED_CLAW);
+	runPath(returnAttackPath, 	returnAttackSeconds * FREQUENCY, 	OPENED_CLAW);
+	runPath(returnInitialPath, 	returnInitialSeconds * FREQUENCY,	OPENED_CLAW);
 }
 
 void runPath(Point3D *path, int size, bool claw){

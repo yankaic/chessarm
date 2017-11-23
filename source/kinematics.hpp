@@ -39,6 +39,4 @@ float elbowAngle(Point3D coordinate);
 
 float wristAngle(Point3D coordinate);
 
-float clawAngle(Point3D coordinate);
-
 void runAngles(float base, float shoulder, float elbow, float wrist, bool claw);

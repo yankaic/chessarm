@@ -46,6 +46,6 @@ float wristAngle(Point3D coordinate){
 	else return wrist = WRIST_DEFAULT;
 }
 
-float clawAngle(Point3D coordinate){
+void runAngles(float base, float shoulder, float elbow, float wrist, bool claw){
 
 }
