@@ -17,6 +17,10 @@ const float HEIGHT_HIGH = 10.0;
 const float HEIGHT_LOW = 5.0;
 const float DEADLINETIME = 2.0;
 
+const float INITIAL_X = 5;
+const float INITIAL_Y = 5;
+const float INITIAL_Z = 5;
+
 Point3D point(Square square, bool isHigh);
 
 Point3D* intercalate(Point3D origin, Point3D destination, const double seconds);

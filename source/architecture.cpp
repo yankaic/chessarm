@@ -143,6 +143,25 @@ void moveArrayTest(){
 	}
 }
 
+void pointTest(){
+	Point3D point1, point2;
+	point1.x= 5;
+	point1.y = 5;
+	point1.z = 5;
+
+	point2 = point1;
+	point2.x = 10;
+
+	using namespace std;
+	cout << "x=" << point1.x << " y=" << point1.y << " z=" << point1.z << endl;
+	cout << "x=" << point2.x << " y=" << point2.y << " z=" << point2.z << endl;
+}
+
+int variable = 4;
+void contextTest(){
+	int variable = 5;
+	using namespace std;
+}
 int main(){
-	moveArrayTest();
+	contextTest();
 }

@@ -7,11 +7,11 @@ const float HAND_LENGTH = 15;
 const float OPENED_CLAW = 90;
 const float CLOSED_CLAW = 90;
 
-const float BASE_DEFAULT = 90;
-const float SHOULDER_DEFAULT = 90;
-const float ELBOW_DEFAULT = 90;
-const float WRIST_DEFAULT = 90;
-const float CLAW_DEFAULT = OPENED_CLAW;
+float BASE_DEFAULT = 90;
+float SHOULDER_DEFAULT = 90;
+float ELBOW_DEFAULT = 90;
+float WRIST_DEFAULT = 90;
+float CLAW_DEFAULT = OPENED_CLAW;
 
 float base = BASE_DEFAULT;
 float shoulder = SHOULDER_DEFAULT;
@@ -40,3 +40,5 @@ float elbowAngle(Point3D coordinate);
 float wristAngle(Point3D coordinate);
 
 float clawAngle(Point3D coordinate);
+
+void runAngles(float base, float shoulder, float elbow, float wrist, bool claw);

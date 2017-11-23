@@ -27,22 +27,22 @@ bool supportTest (Point3D location) {
 }
 
 float baseAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return base;
+	if (supportTest(coordinate)) return BASE_DEFAULT = base;
 	else return base = BASE_DEFAULT;
 }
 
 float shoulderAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return shoulder;
+	if (supportTest(coordinate)) return SHOULDER_DEFAULT = shoulder;
 	else return shoulder = SHOULDER_DEFAULT;
 }
 
 float elbowAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return elbow;
+	if (supportTest(coordinate)) return ELBOW_DEFAULT = elbow;
 	else return elbow = ELBOW_DEFAULT;
 }
 
 float wristAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return wrist;
+	if (supportTest(coordinate)) return WRIST_DEFAULT = wrist;
 	else return wrist = WRIST_DEFAULT;
 }
 

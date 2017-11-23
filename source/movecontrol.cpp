@@ -40,5 +40,35 @@ Point3D* intercalate(Point3D origin, Point3D destination, const double seconds){
 }
 
 void move(Movement move){
+	Point3D initialPosition, origin, originHigh, destination, destinationHigh;
+
+	initialPosition.x = INITIAL_X;
+	initialPosition.y = INITIAL_Y;
+	initialPosition.z = INITIAL_Z;
+
+	origin = point(move.origin, false);
+	originHigh = origin;
+	originHigh.z = HEIGHT_HIGH;
+
+	destination = point(move.destination, false);
+	destinationHigh = destination;
+	destinationHigh.z = HEIGHT_HIGH;
+
+	Point3D *prepareTakePath, *takePath, *returnTakePath, 
+		*prepareAttackPath, *attackPath, *returnAttackPath, *returnInitialPath;
+
+	const double prepareTakeSeconds = 2, takeSeconds = 1, returnTakeSeconds = 1, 
+		prepareAttackSeconds = 2, attackSeconds = 1, returnAttackSeconds = 1, returnInitialSeconds = 3;
+
+	prepareTakePath 	= intercalate(initialPosition, 	originHigh,				prepareTakeSeconds);
+	takePath 					= intercalate(originHigh, 			origin, 					takeSeconds);
+	returnTakePath 		= intercalate(origin, 					originHigh, 			returnTakeSeconds);
+	prepareTakePath		= intercalate(originHigh, 			destinationHigh,	prepareTakeSeconds);
+	attackPath 				= intercalate(destinationHigh,	destination, 			attackSeconds);
+	returnAttackPath	= intercalate(destination, 			destinationHigh, 	returnAttackSeconds);
+	returnInitialPath = intercalate(destinationHigh, 	initialPosition, 	returnInitialSeconds);
+}
+
+void runPath(Point3D *path, bool clawOpened){
 	
 }
