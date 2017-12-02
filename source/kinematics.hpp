@@ -1,23 +1,23 @@
 
-const float BASE_HEIGHT = 18.0;
-const float ARM_LENGTH = 23.0;
-const float FOREARM_LENGTH = 23.25;
-const float HAND_LENGTH = 15;
+const float ALTURA_BASE = 18.0;
+const float COMPRIMENTO_BRACO = 23.0;
+const float COMPRIMENTO_ANTEBRACO = 23.25;
+const float COMPRIMENTO_MAO = 15;
 
-const float OPENED_CLAW = 90;
-const float CLOSED_CLAW = 90;
+const float GARRA_ABERTA = 90;
+const float GARRA_FECHADA = 90;
 
-float BASE_DEFAULT = 90;
-float SHOULDER_DEFAULT = 90;
-float ELBOW_DEFAULT = 90;
-float WRIST_DEFAULT = 90;
-float CLAW_DEFAULT = OPENED_CLAW;
+float BASE_ANTERIOR = 90;
+float OMBRO_ANTERIOR = 90;
+float COTOVELO_ANTERIOR = 90;
+float PULSO_ANTERIOR = 90;
+float GARRA_ANTERIOR = GARRA_ABERTA;
 
-float base = BASE_DEFAULT;
-float shoulder = SHOULDER_DEFAULT;
-float elbow = ELBOW_DEFAULT;
-float wrist = WRIST_DEFAULT;
-float claw = CLAW_DEFAULT;
+float base = BASE_ANTERIOR;
+float ombro = OMBRO_ANTERIOR;
+float cotovelo = COTOVELO_ANTERIOR;
+float pulso = PULSO_ANTERIOR;
+float garra = GARRA_ANTERIOR;
 
 #ifndef POINT3D 
 #define POINT3D 
@@ -26,17 +26,17 @@ struct P3D{
 	double y;
 	double z;
 };
-typedef struct P3D Point3D;
+typedef struct P3D Coordenada;
 #endif
 
-bool supportTest(Point3D coordinate);
+bool dimensoesSuportadas(Coordenada coordenada);
 
-float baseAngle(Point3D coordinate);
+float anguloBase(Coordenada coordenada);
 
-float shoulderAngle(Point3D coordinate);
+float anguloOmbro(Coordenada coordenada);
 
-float elbowAngle(Point3D coordinate);
+float anguloCotovelo(Coordenada coordenada);
 
-float wristAngle(Point3D coordinate);
+float anguloPulso(Coordenada coordenada);
 
-void runAngles(float base, float shoulder, float elbow, float wrist, bool claw);
+void executarAngulos(float base, float ombro, float cotovelo, float pulso, bool garra);

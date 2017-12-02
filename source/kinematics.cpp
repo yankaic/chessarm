@@ -1,51 +1,51 @@
 #include "kinematics.hpp"
 
-bool supportTest (Point3D location) {	  
-	float module = sqrt(pow(location.x, 2) + pow(location.y,2));
-	base = acos(location.x / module) * 180 / M_PI;
+bool dimensoesSuportadas (Coordenada posicao) {	  
+	float modulo = sqrt(pow(posicao.x, 2) + pow(posicao.y,2));
+	base = acos(posicao.x / modulo) * 180 / M_PI;
 
-	float y = module; //front lenght	
-	float wristHeight = location.z + HAND_LENGTH;	
-	float distance = sqrt(pow(y, 2) + pow(wristHeight - BASE_HEIGHT, 2));	
-	float wristModule = sqrt(pow(wristHeight, 2) + pow(y, 2)); //distancia base pulso.
+	float y = modulo; //front lenght	
+	float alturaGarra = posicao.z + COMPRIMENTO_MAO;	
+	float distancia = sqrt(pow(y, 2) + pow(alturaGarra - ALTURA_BASE, 2));	
+	float distanciaBasePulso = sqrt(pow(alturaGarra, 2) + pow(y, 2)); //distancia base pulso.
 	
 	float complement1 = 
-		acos(( -pow(FOREARM_LENGTH,2) + pow(distance, 2) + pow(ARM_LENGTH, 2)) / (2 * distance * ARM_LENGTH));
+		acos(( -pow(COMPRIMENTO_ANTEBRACO,2) + pow(distancia, 2) + pow(COMPRIMENTO_BRACO, 2)) / (2 * distancia * COMPRIMENTO_BRACO));
 	float complement2 = 
-		acos((-pow(wristModule, 2) + pow(distance, 2) + pow(BASE_HEIGHT, 2)) / (2 * distance * BASE_HEIGHT));
+		acos((-pow(distanciaBasePulso, 2) + pow(distancia, 2) + pow(ALTURA_BASE, 2)) / (2 * distancia * ALTURA_BASE));
 	
-	shoulder = (complement1 + complement2) * 180 / M_PI -90;
+	ombro = (complement1 + complement2) * 180 / M_PI -90;
 	
-	float realHigh = location.z - (BASE_HEIGHT - HAND_LENGTH);
+	float realHigh = posicao.z - (ALTURA_BASE - COMPRIMENTO_MAO);
 	
-	elbow = acos(
-		(pow(ARM_LENGTH, 2) + pow(FOREARM_LENGTH, 2) - (pow(y,2) + pow(realHigh, 2)))
-		/ (2 * ARM_LENGTH * FOREARM_LENGTH) ) * 180 / M_PI;
-	wrist = 270 - shoulder - elbow;
+	cotovelo = acos(
+		(pow(COMPRIMENTO_BRACO, 2) + pow(COMPRIMENTO_ANTEBRACO, 2) - (pow(y,2) + pow(realHigh, 2)))
+		/ (2 * COMPRIMENTO_BRACO * COMPRIMENTO_ANTEBRACO) ) * 180 / M_PI;
+	pulso = 270 - ombro - cotovelo;
 	
-	return !(isnan(shoulder) || isnan(elbow) || isnan(wrist) || isnan(base));
+	return !(isnan(ombro) || isnan(cotovelo) || isnan(pulso) || isnan(base));
 }
 
-float baseAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return BASE_DEFAULT = base;
-	else return base = BASE_DEFAULT;
+float anguloBase(Coordenada coordenada){
+	if (dimensoesSuportadas(coordenada)) return BASE_ANTERIOR = base;
+	else return base = BASE_ANTERIOR;
 }
 
-float shoulderAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return SHOULDER_DEFAULT = shoulder;
-	else return shoulder = SHOULDER_DEFAULT;
+float anguloOmbro(Coordenada coordenada){
+	if (dimensoesSuportadas(coordenada)) return OMBRO_ANTERIOR = ombro;
+	else return ombro = OMBRO_ANTERIOR;
 }
 
-float elbowAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return ELBOW_DEFAULT = elbow;
-	else return elbow = ELBOW_DEFAULT;
+float anguloCotovelo(Coordenada coordenada){
+	if (dimensoesSuportadas(coordenada)) return COTOVELO_ANTERIOR = cotovelo;
+	else return cotovelo = COTOVELO_ANTERIOR;
 }
 
-float wristAngle(Point3D coordinate){
-	if (supportTest(coordinate)) return WRIST_DEFAULT = wrist;
-	else return wrist = WRIST_DEFAULT;
+float anguloPulso(Coordenada coordenada){
+	if (dimensoesSuportadas(coordenada)) return PULSO_ANTERIOR = pulso;
+	else return pulso = PULSO_ANTERIOR;
 }
 
-void runAngles(float base, float shoulder, float elbow, float wrist, bool claw){
+void executarAngulos(float base, float ombro, float cotovelo, float pulso, bool garra){
 
 }

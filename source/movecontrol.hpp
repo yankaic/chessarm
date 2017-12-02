@@ -8,25 +8,24 @@
 #include "kinematics.cpp"
 #endif
 
-const float BOARD_SQUARE = 5.5;
-const float BOARD_WITHOUT_BORDER = BOARD_SQUARE * BOARD_SIZE;
-const float BOARD_BORDER = 2.0;
-const float BOARD_WITH_BORDER = BOARD_WITHOUT_BORDER + BOARD_BORDER * 2.0;
-const float GAP_DISTANCE = 5.0;
-const float HEIGHT_HIGH = 10.0;
-const float HEIGHT_LOW = 5.0;
-const float DEADLINETIME = 2.0;
+const float TAMANHO_CASA = 5.5;
+const float TABULEIRO_SEM_BORDA = TAMANHO_CASA * TAMANHO_TABULEIRO;
+const float TAMANHO_BORDA = 2.0;
+const float TABULERO_COM_BORDA = TABULEIRO_SEM_BORDA + TAMANHO_BORDA * 2.0;
+const float DISTANCIA_TABULEIRO_EO_ROBO = 5.0;
+const float ALTURA_CIMA = 10.0;
+const float ALTURA_BAIXO = 5.0;
+const float TEMPO_MAXIMO = 2.0;
 
-const float INITIAL_X = 5;
-const float INITIAL_Y = 5;
-const float INITIAL_Z = 5;
+const float X_INICIAL = 0;
+const float Y_INICIAL = 14.0;
+const float Z_INICIAL = 24.0;
 
+const int FREQUENCIA = 10; //Hz
 
-const int FREQUENCY = 30;
+Coordenada localizar(Casa casa, bool isHigh);
 
-Point3D point(Square square, bool isHigh);
+Coordenada* intercalar(Coordenada origem, Coordenada destino, const double segundos);
 
-Point3D* intercalate(Point3D origin, Point3D destination, const double seconds);
-
-void move(Movement move);
-void runPath(Point3D *path, int size, bool claw);
+void movimento(Movimento movimento);
+void executarTrajeto(Coordenada *trajeto, int tamanho, bool garra);

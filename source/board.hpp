@@ -4,50 +4,37 @@
 #endif
 
 // indices para o tabuleiro abaixo
-#define WHITE 	0
-#define BLACK 	1
-#define PAWN 		2
-#define ROOK 		3
-#define KNIGHT 	4
-#define BISHOP 	5
-#define QUEEN 	6
-#define KING 		7
-#define occupiedSquares ((pieces[WHITE] | pieces[BLACK]))
+#define BRANCO 	0
+#define PRETO 	1
+#define PEAO 		2
+#define TORRE 	3
+#define CAVALO 	4
+#define BISPO 	5
+#define RAINHA 	6
+#define REI 		7
+#define casasOcupadas ((pecas[BRANCO] | pecas[PRETO]))
 
-Map pieces[8] = {
-	0x000000000000FFFF,	//white
-	0xFFFF000000000000,	//black
-	0x00FF00000000FF00, //pawn
-	0x8100000000000081,	//rook
-	0x4200000000000042,	//knight
-	0x2400000000000024,	//bishop
-	0x0800000000000008,	//queen
-	0x1000000000000010	//king
+Mapa pecas[8] = {
+	0x000000000000FFFF,	//brancas
+	0xFFFF000000000000,	//pretas
+	0x00FF00000000FF00, //peoes
+	0x8100000000000081,	//torres
+	0x4200000000000042,	//cavalos
+	0x2400000000000024,	//bispos
+	0x0800000000000008,	//rainhas
+	0x1000000000000010	//reis
 };
 
-struct Movement{
-	Square origin;
-	Square destination;
+struct Movimento{
+	Casa origem;
+	Casa destino;
 };
 
 
+void registrarMovimento(Movimento movimento); 
 
-Map* pointer = &pieces[2];
-
-Map* whitePieces 		= &pieces[WHITE];
-Map* blackPieces		= &pieces[BLACK];
-
-Map* pawnPieces 		= &pieces[PAWN];
-Map* rookPieces 		= &pieces[ROOK];
-Map* knightPieces		= &pieces[KNIGHT];
-Map* bishopPieces 	= &pieces[BISHOP];
-Map* queenPieces 		= &pieces[QUEEN];
-Map* kingPieces 		= &pieces[KING];
-
-void recordMovement(Movement move); 
-
-int pieceType(Square Square);
-int pieceColor(Square);
+int tipoPeca(Casa Casa);
+int corPeca(Casa casa);
 
 char* boardString();
 char* whiteString();

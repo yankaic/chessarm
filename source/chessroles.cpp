@@ -1,13 +1,13 @@
 #include "chessroles.hpp"
 
 
-char* toString(Map map, char* text, char ch){
+char* toString(Mapa mapa, char* text, char ch){
 	int i = 63;	
-	Map mostSig = 0x8000000000000000;
+	Mapa mostSig = 0x8000000000000000;
 
 	for(int i = 0; i < 64; i++){
-		text[i] = (map & mostSig) != 0 ? ch : text[i];
-		map = map << 1;
+		text[i] = (mapa & mostSig) != 0 ? ch : text[i];
+		mapa = mapa << 1;
 	}
 	return text;
 }
@@ -20,174 +20,174 @@ char* emptyString(){
 	return text;
 }
 
-char* toString(Map map){	
-	return toString(map,emptyString(),'1');
+char* toString(Mapa mapa){	
+	return toString(mapa,emptyString(),'1');
 }
 
-Map map(int line, int column){
-	Square square;
-	square.line = line;
-	square.column = column;
-	return map(square);
+Mapa mapear(int fileira, int coluna){
+	Casa casa;
+	casa.fileira = fileira;
+	casa.coluna = coluna;
+	return mapear(casa);
 }
 
-Map map(Square square){
-	if(square.line >= BOARD_SIZE || square.column >= BOARD_SIZE || square.line < 0 || square.column < 0)
+Mapa mapear(Casa casa){
+	if(casa.fileira >= TAMANHO_TABULEIRO || casa.coluna >= TAMANHO_TABULEIRO || casa.fileira < 0 || casa.coluna < 0)
 		return 0;
-	int shift = square.line * BOARD_SIZE + square.column;
-	Map bit = 0x1;
-	return bit << shift;
+	int deslocamento = casa.fileira * TAMANHO_TABULEIRO + casa.coluna;
+	Mapa bit = 0x1;
+	return bit << deslocamento;
 } 
 
-bool contains(Map map1, Map map2){
-	return (map1 & map2) != 0;
+bool contem(Mapa mapa1, Mapa mapa2){
+	return (mapa1 & mapa2) != 0;
 }
 
-Square getLocation(Map map){
-	int count = -1;
-	while(map != 0){
-		count++;
-		map = map >> 1;
+Casa localizacao(Mapa mapa){
+	int contador = -1;
+	while(mapa != 0){
+		contador++;
+		mapa = mapa >> 1;
 	}
-	Square square;
-	square.line = count / BOARD_SIZE;
-	square.column = count % BOARD_SIZE;
-	return square;
+	Casa casa;
+	casa.fileira = contador / TAMANHO_TABULEIRO;
+	casa.coluna = contador % TAMANHO_TABULEIRO;
+	return casa;
 }
 
-int count(Map map){
-	int count = 0;
-	Map bit = 0x1;
-	while(map != 0){
-		if(map & bit == bit)
-			count++;
-		map =  map >> 1;
+int contar(Mapa mapa){
+	int contador = 0;
+	Mapa bit = 0x1;
+	while(mapa != 0){
+		if(mapa & bit == bit)
+			contador++;
+		mapa =  mapa >> 1;
 	}
-	return count;
+	return contador;
 }
 
-Map northAttacks(Map occupied, Square square){	
-	Vector vector;
+Mapa ataquesNorte(Mapa ocupadas, Casa casa){	
+	Vetor vector;
 	vector.x = 0;
 	vector.y = 1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map northeastAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesNordeste(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = 1;
 	vector.y = 1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map eastAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesLeste(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = 1;
 	vector.y = 0;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map southeastAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesSudeste(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = 1;
 	vector.y = -1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map southAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesSul(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = 0;
 	vector.y = -1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map southwestAttacks(Map occupied, Square square){	
-	Vector vector;
+Mapa ataquesSudoeste(Mapa ocupadas, Casa casa){	
+	Vetor vector;
 	vector.x = -1;
 	vector.y = -1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map westAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesOeste(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = -1;
 	vector.y = 0;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map northwestAttacks(Map occupied, Square square){
-	Vector vector;
+Mapa ataquesNoroeste(Mapa ocupadas, Casa casa){
+	Vetor vector;
 	vector.x = -1;
 	vector.y = 1;
-	return targetedAttacks(occupied, square, vector);
+	return ataquesDirecionado(ocupadas, casa, vector);
 }
 
-Map targetedAttacks	(Map occupied, Square square, Vector vector){
-	int scale = 1;
-	Map nextAttack, attacks = 0;
+Mapa ataquesDirecionado	(Mapa ocupadas, Casa casa, Vetor vector){
+	int escala = 1;
+	Mapa proximoAtaque, ataques = 0;
 
 	do{
-		nextAttack = map(square.line + vector.y * scale, square.column + vector.x * scale);
-		attacks |= nextAttack;
-		scale++;
-	}while((nextAttack & occupied) != nextAttack); //continua enquanto não encontrar obstaculo ou não sair do tabuleiro
+		proximoAtaque = mapear(casa.fileira + vector.y * escala, casa.coluna + vector.x * escala);
+		ataques |= proximoAtaque;
+		escala++;
+	}while((proximoAtaque & ocupadas) != proximoAtaque); //continua enquanto não encontrar obstaculo ou não sair do tabuleiro
 
-	return attacks;	
+	return ataques;	
 }
 
-Map pawnAttacks	(Map occupied, Square square, bool isWhite){
+Mapa ataquesPeao	(Mapa ocupadas, Casa casa, bool isWhite){
 	int yGap = isWhite ? 1 : -1;
-	Map attacks = map(square.line + yGap, square.column -1);
-	attacks |= map(square.line + yGap, square.column +1);
-	return attacks;
+	Mapa ataques = mapear(casa.fileira + yGap, casa.coluna -1);
+	ataques |= mapear(casa.fileira + yGap, casa.coluna +1);
+	return ataques;
 }
 
-Map rookAttacks(Map occupied, Square square){
-	Map attacks = northAttacks(occupied, square);
-	attacks |= eastAttacks(occupied, square);
-	attacks |= southAttacks(occupied, square);
-	attacks |= westAttacks(occupied, square);
-	return attacks;
+Mapa ataquesTorre(Mapa ocupadas, Casa casa){
+	Mapa ataques = ataquesNorte(ocupadas, casa);
+	ataques |= ataquesLeste(ocupadas, casa);
+	ataques |= ataquesSul(ocupadas, casa);
+	ataques |= ataquesOeste(ocupadas, casa);
+	return ataques;
 }
 
-Map bishopAttacks(Map occupied, Square square){
-	Map attacks = northeastAttacks(occupied, square);
-	attacks |= southeastAttacks(occupied, square);
-	attacks |= southwestAttacks(occupied, square);
-	attacks |= northwestAttacks(occupied, square);
-	return attacks;
+Mapa ataquesBispo(Mapa ocupadas, Casa casa){
+	Mapa ataques = ataquesNordeste(ocupadas, casa);
+	ataques |= ataquesSudeste(ocupadas, casa);
+	ataques |= ataquesSudoeste(ocupadas, casa);
+	ataques |= ataquesNoroeste(ocupadas, casa);
+	return ataques;
 }
 
-Map knightAttacks(Map occupied, Square square){
-	Vector vect;
-	Map attacks = 0, nextAttack;
+Mapa ataquesCavalo(Mapa ocupadas, Casa casa){
+	Vetor vect;
+	Mapa ataques = 0, proximoAtaque;
 	for(vect.x = -2; vect.x <= 2; vect.x++){
 		for(vect.y = -2; vect.y <= 2; vect.y++){
 			if(std::abs(vect.x) + std::abs(vect.y) == 3){
-				nextAttack = map(square.line + vect.y, square.column + vect.x);
-				attacks |= nextAttack;
+				proximoAtaque = mapear(casa.fileira + vect.y, casa.coluna + vect.x);
+				ataques |= proximoAtaque;
 			}
 		}
 	}
-	return attacks;
+	return ataques;
 }
 
-Map queenAttacks(Map occupied, Square square){
-	Map attacks = rookAttacks(occupied, square);
-	attacks |= bishopAttacks(occupied, square);
-	return attacks;
+Mapa ataquesRainha(Mapa ocupadas, Casa casa){
+	Mapa ataques = ataquesTorre(ocupadas, casa);
+	ataques |= ataquesBispo(ocupadas, casa);
+	return ataques;
 }
 
-Map kingAttacks(Map occupied, Square square){
-	Vector vect;
-	Map attacks = 0, nextAttack;
+Mapa ataquesRei(Mapa ocupadas, Casa casa){
+	Vetor vect;
+	Mapa ataques = 0, proximoAtaque;
 	for(vect.x = -1; vect.x < 2; vect.x++){
 		for(vect.y = -1; vect.y < 2; vect.y++){
-			nextAttack = map(square.line + vect.y, square.column + vect.x);
-			attacks |= nextAttack;
+			proximoAtaque = mapear(casa.fileira + vect.y, casa.coluna + vect.x);
+			ataques |= proximoAtaque;
 		}
 	}
-	 Map itself = map(square);
-	 attacks -= itself;
-	return attacks;
+	 Mapa casaRei = mapear(casa);
+	 ataques -= casaRei;
+	return ataques;
 }

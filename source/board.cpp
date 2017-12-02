@@ -1,68 +1,69 @@
 #include "board.hpp"
 
-void recordMovement(Movement move){
-	Map origin = map(move.origin);
-	Map destination = map(move.destination);
+void registrarMovimento(Movimento movimento){
+	Mapa origem = mapear(movimento.origem);
+	Mapa destino = mapear(movimento.destino);
 
-	int offensive = pieceType(move.origin);
-	int color = pieceColor(move.origin);
+	int atacante = tipoPeca(movimento.origem);
+	int cor = corPeca(movimento.origem);
 
-	pieces[offensive] |= destination;
-	pieces[color] |= destination;
+	pecas[atacante] |= destino;		//uniao
+	pecas[cor] |= destino;				//uniao
 
-	for(int piece = WHITE; piece <= KING; piece++){		
- 		if(!(piece == offensive || piece == color))
-			pieces[piece] &= ~destination;
-		pieces[piece] &= ~origin;		
+	for(int tipo = BRANCO; tipo <= REI; tipo++){		
+ 		if(!(tipo == atacante || tipo == cor))
+			pecas[tipo] &= ~destino;		// diferenca (A-B)
+		pecas[tipo] &= ~origem;					// diferenca (A-B)
 	}
 }
 
-int pieceType(Square square){
-	int piece;
-	for(piece = PAWN; piece <= KING && !contains(pieces[piece], map(square)); piece++){}
-	return piece;
+int tipoPeca(Casa casa){
+	int tipo;
+	for(tipo = PEAO; tipo <= REI 
+		&& !contem(pecas[tipo], mapear(casa)); tipo++) {}
+	return tipo;
 }
 
-int pieceColor(Square square){
-	return contains(pieces[WHITE], map(square)) ? WHITE : BLACK;
+int corPeca(Casa casa){
+	return contem(pecas[BRANCO], mapear(casa)) ? BRANCO : PRETO;
 }
 
 char* boardString(){	
 	char* text = emptyString();
-	toString	(pieces[PAWN] 	& pieces[WHITE],	text,'p');
-	toString	(pieces[ROOK] 	& pieces[WHITE],	text,'r');
-	toString	(pieces[KNIGHT] & pieces[WHITE],	text,'h');
-	toString	(pieces[BISHOP] & pieces[WHITE],	text,'b');
-	toString	(pieces[QUEEN] 	& pieces[WHITE],	text,'q');
-	toString	(pieces[KING] 	& pieces[WHITE],	text,'k');
+	toString	(pecas[PEAO] 	& pecas[BRANCO],	text,'p');
+	toString	(pecas[TORRE] 	& pecas[BRANCO],	text,'r');
+	toString	(pecas[CAVALO] & pecas[BRANCO],	text,'h');
+	toString	(pecas[BISPO] & pecas[BRANCO],	text,'b');
+	toString	(pecas[RAINHA] 	& pecas[BRANCO],	text,'q');
+	toString	(pecas[REI] 	& pecas[BRANCO],	text,'k');
 
-	toString	(pieces[PAWN] 	& pieces[BLACK],	text,'P');
-	toString	(pieces[ROOK] 	& pieces[BLACK],	text,'R');
-	toString	(pieces[KNIGHT] & pieces[BLACK],	text,'H');
-	toString	(pieces[BISHOP] & pieces[BLACK],	text,'B');
-	toString	(pieces[QUEEN] 	& pieces[BLACK],	text,'Q');
-	toString	(pieces[KING] 	& pieces[BLACK],	text,'K');
+	toString	(pecas[PEAO] 	& pecas[PRETO],	text,'P');
+	toString	(pecas[TORRE] 	& pecas[PRETO],	text,'R');
+	toString	(pecas[CAVALO] & pecas[PRETO],	text,'H');
+	toString	(pecas[BISPO] & pecas[PRETO],	text,'B');
+	toString	(pecas[RAINHA] 	& pecas[PRETO],	text,'Q');
+	toString	(pecas[REI] 	& pecas[PRETO],	text,'K');
 	return text;	
 }
 
 char* whiteString(){
 	char* text = emptyString();
-	toString	(pieces[PAWN] 	& pieces[WHITE],	text,'p');
-	toString	(pieces[ROOK] 	& pieces[WHITE],	text,'r');
-	toString	(pieces[KNIGHT] & pieces[WHITE],	text,'h');
-	toString	(pieces[BISHOP] & pieces[WHITE],	text,'b');
-	toString	(pieces[QUEEN] 	& pieces[WHITE],	text,'q');
-	toString	(pieces[KING] 	& pieces[WHITE],	text,'k');
+	toString	(pecas[PEAO] 	& pecas[BRANCO],	text,'p');
+	toString	(pecas[TORRE] 	& pecas[BRANCO],	text,'r');
+	toString	(pecas[CAVALO] & pecas[BRANCO],	text,'h');
+	toString	(pecas[BISPO] & pecas[BRANCO],	text,'b');
+	toString	(pecas[RAINHA] 	& pecas[BRANCO],	text,'q');
+	toString	(pecas[REI] 	& pecas[BRANCO],	text,'k');
 	return text;
 }
 
 char* blackString(){
 	char* text = emptyString();
-	toString	(pieces[PAWN] 	& pieces[BLACK],	text,'P');
-	toString	(pieces[ROOK] 	& pieces[BLACK],	text,'R');
-	toString	(pieces[KNIGHT] & pieces[BLACK],	text,'H');
-	toString	(pieces[BISHOP] & pieces[BLACK],	text,'B');
-	toString	(pieces[QUEEN] 	& pieces[BLACK],	text,'Q');
-	toString	(pieces[KING] 	& pieces[BLACK],	text,'K');
+	toString	(pecas[PEAO] 	& pecas[PRETO],	text,'P');
+	toString	(pecas[TORRE] 	& pecas[PRETO],	text,'R');
+	toString	(pecas[CAVALO] & pecas[PRETO],	text,'H');
+	toString	(pecas[BISPO] & pecas[PRETO],	text,'B');
+	toString	(pecas[RAINHA] 	& pecas[PRETO],	text,'Q');
+	toString	(pecas[REI] 	& pecas[PRETO],	text,'K');
 	return text;	
 }

@@ -49,20 +49,20 @@ void splitBoard(char* dir){
 		printf("No image data \n");
 	}
 
-	//square
+	//casa
 	Rect roi;
-    roi.width = image.size().width;
-    roi.height = image.size().height;
+    roi.width = image.tamanho().width;
+    roi.height = image.tamanho().height;
 
     roi.x = roi.width - roi.height ;
     roi.x = max(roi.x / 2, 0);
     roi.y = roi.height - roi.width;
     roi.y = max(roi.y / 2, 0);
 
-    roi.width = min(image.size().width, image.size().height);
-    roi.height = min(image.size().width, image.size().height);
-    Mat square = image(roi);
-	resize(square, image, Size(SLICES * CELL_SIZE, SLICES * CELL_SIZE), 0, 0);
+    roi.width = min(image.tamanho().width, image.tamanho().height);
+    roi.height = min(image.tamanho().width, image.tamanho().height);
+    Mat casa = image(roi);
+	resize(casa, image, Size(SLICES * CELL_SIZE, SLICES * CELL_SIZE), 0, 0);
 	
 
 	roi.width = CELL_SIZE - GAP * 2;
@@ -71,21 +71,21 @@ void splitBoard(char* dir){
 		for(int j = 0; j < SLICES; j++){
 			roi.x = j * CELL_SIZE + GAP;
 			roi.y = i * CELL_SIZE + GAP;
-			square = image(roi);
+			casa = image(roi);
 
 			stringstream filename;
 			filename << "./resource/output/all/img" << std::setw(2) << std::setfill('0') << imageCount << "["<<i << "x" << j << "].jpg";
-			imwrite(filename.str(), square);
+			imwrite(filename.str(), casa);
 
 			if((i + j) % 2){
 				stringstream filename;
 				filename << "./resource/output/pair/img" << std::setw(2) << std::setfill('0') << imageCount << "["<<i << "x" << j << "].jpg";
-				imwrite(filename.str(), square);
+				imwrite(filename.str(), casa);
 			}
 			else{
 				stringstream filename;
 				filename << "./resource/output/odd/img" << std::setw(2) << std::setfill('0') << imageCount << "["<<i << "x" << j << "].jpg";
-				imwrite(filename.str(), square);
+				imwrite(filename.str(), casa);
 			}
 		}
 	}

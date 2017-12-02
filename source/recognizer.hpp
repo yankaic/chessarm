@@ -3,7 +3,7 @@
 #include "board.cpp"
 #endif
 
-Movement movement(Map newoccupation);
+Movimento movimento(Mapa novaOcupacao);
 
-Map availableAttacks(Square origin);
+Mapa ataquesDisponiveis(Casa origem);
 

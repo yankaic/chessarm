@@ -13,10 +13,10 @@
 #include "movecontrol.cpp"
 
 void printMap(char* text){	
-	std::cout << "linear: " << text << std::endl;
-	for(int line = 0; line < BOARD_SIZE; line++){
-		for(int column = BOARD_SIZE - 1; column >= 0; column--){
-			char ch = text[line * BOARD_SIZE + column];
+	//std::cout << "linear: " << text << std::endl;
+	for(int fileira = 0; fileira < TAMANHO_TABULEIRO; fileira++){
+		for(int coluna = TAMANHO_TABULEIRO - 1; coluna >= 0; coluna--){
+			char ch = text[fileira * TAMANHO_TABULEIRO + coluna];
 			if(ch == '1')
 				std::cout << " *";
 			else if (ch == '0')				
@@ -29,122 +29,125 @@ void printMap(char* text){
 }
 
 void testCount(){
-	std::cout << "count: " << count(0) << std::endl;
+	std::cout << "contador: " << contar(0) << std::endl;
 }
 
 void testLocation(){
-	Square sq = getLocation(map(9,7));
-	std::cout << "line: " << sq.line << " column: " << sq.column << std::endl;
+	Casa sq = localizacao(mapear(9,7));
+	std::cout << "fileira: " << sq.fileira << " coluna: " << sq.coluna << std::endl;
 }
 
 void testBitmap(){
-	printMap(toString(~map(7,7)));
+	printMap(toString(~mapear(7,7)));
 }
 
 void testMap(){
-	printMap(toString(occupiedSquares));
+	printMap(toString(casasOcupadas));
 }
 
 void northTest(){
-	printMap(toString(northwestAttacks(0, getLocation(map(3,6)))));
+	printMap(toString(ataquesNoroeste(0, localizacao(mapear(3,6)))));
 }
 
 void piecesTest(){
-	printMap(toString(bishopAttacks(0, getLocation(map(3,3)))));
+	printMap(toString(ataquesBispo(0, localizacao(mapear(3,3)))));
 }
 
 void pawnAttackTest(){
-	printMap(toString(pawnAttacks(0, getLocation(map(1,6)),true)));
+	printMap(toString(ataquesPeao(0, localizacao(mapear(1,6)),true)));
 }
 
 void boardPrintTest(){
 	printMap(boardString());
 }
 
-void movimentTest(){
-	Movement move;
-	move.origin = getLocation(map(1,1));
-	move.destination = getLocation(map(7,1));
-	recordMovement(move);
+void movementTest(){
+	Movimento movimento;
+	movimento.origem = localizacao(mapear(1,1));
+	movimento.destino = localizacao(mapear(2,1));
+	registrarMovimento(movimento);
 
+	std::cout << std::endl << "Todas as peças: " << std::endl;
 	printMap(boardString());
-	std::cout << std::endl << "Peoes: ";
-	printMap(toString(pieces[PAWN]));	
-	printMap(toString(pieces[WHITE]));
-	printMap(toString(pieces[BLACK]));
+	std::cout << std::endl << "Peões: " << std::endl;
+	printMap(toString(pecas[PEAO]));	
+	std::cout << std::endl << "Peças brancas: " << std::endl;
+	printMap(toString(pecas[BRANCO]));	
+	std::cout << std::endl << "Peças pretas: " << std::endl;
+	printMap(toString(pecas[PRETO]));
 }
 
 void testPointer(){
-	printMap(toString(pieces[ROOK]));
+	printMap(toString(pecas[TORRE]));
 }
 
 void recognizeTest(){
-	Movement move;
-	move.origin = getLocation(map(6,1));
-	move.destination = getLocation(map(5,1));
-	recordMovement(move);
-	move.origin = getLocation(map(0,3));
-	move.destination = getLocation(map(3,4));
-	recordMovement(move);
+	Movimento movimento;
+	movimento.origem = localizacao(mapear(6,1));
+	movimento.destino = localizacao(mapear(5,1));
+	registrarMovimento(movimento);
+	movimento.origem = localizacao(mapear(0,3));
+	movimento.destino = localizacao(mapear(3,4));
+	registrarMovimento(movimento);
 	printMap(boardString());
 
-	Map attacks = availableAttacks(move.destination);
-	printMap(toString(attacks));
+	Mapa ataques = ataquesDisponiveis(movimento.destino);
+	printMap(toString(ataques));
 }
 
 void recognTest(){
-	Map newoccupation = 0xFFFF00000001FEFF;
-	Map modifications = occupiedSquares ^ newoccupation;
-	Map originmap = modifications & occupiedSquares;
-	Map destinationmap = modifications ^ originmap;
+	Mapa novaOcupacao = 0xFFFF00000001FEFF;
+	Mapa modificacoes = casasOcupadas ^ novaOcupacao;
+	Mapa mapaOrigem = modificacoes & casasOcupadas;
+	Mapa destinationmap = modificacoes ^ mapaOrigem;
 
-	printMap(toString(occupiedSquares));
-	printMap(toString(newoccupation));
-	printMap(toString(modifications));
-	printMap(toString(originmap));
+	printMap(toString(casasOcupadas));
+	printMap(toString(novaOcupacao));
+	printMap(toString(modificacoes));
+	printMap(toString(mapaOrigem));
 	printMap(toString(destinationmap));
 }
 
 void kinematicsTest(){
 	using namespace std;
-	Point3D location;
-	location.x = 14;
-	location.y = 60;
-	location.z = 16;
+	Coordenada posicao;
+	posicao.x = 14;
+	posicao.y = 60;
+	posicao.z = 16;
 
-	supportTest(location);
-	cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
-	cout << "base: " << baseAngle(location) << endl;
-	cout << "ombro: " << shoulderAngle(location) << endl;
-	cout << "cotovelo: " << elbowAngle(location) << endl;
-	cout << "pulso: " << wristAngle(location) << endl;
+	dimensoesSuportadas(posicao);
+	cout << "x=" << posicao.x << " y=" << posicao.y << " z=" << posicao.z << endl;
+	cout << "base: " << anguloBase(posicao) << endl;
+	cout << "ombro: " << anguloOmbro(posicao) << endl;
+	cout << "cotovelo: " << anguloCotovelo(posicao) << endl;
+	cout << "pulso: " << anguloPulso(posicao) << endl;
 }
 
 void moveTest(){
-	Square square;
-	square.line = 0;
-	square.column = 4;
-	Point3D location = point(square, true);
+	Casa casa;
+	casa.fileira = 0;
+	casa.coluna = 4;
+	Coordenada posicao = localizar(casa, true);
 	using namespace std;
-	cout << "x=" << location.x << "\ty=" << location.y << "\tz=" << location.z << endl;
+	cout << "x=" << posicao.x << "\ty=" << posicao.y << "\tz=" << posicao.z << endl;
 }
 
 void moveArrayTest(){
-	Square origin = getLocation(map(0,0));
-	Square destination = getLocation(map(7,7));
-	Point3D from = point(origin, true);
-	Point3D to = point(destination, true);
-	Point3D *points = intercalate(from, to,2.0);
+	Casa origem = localizacao(mapear(0,0));
+	Casa destino = localizacao(mapear(7,7));
+	Coordenada from = localizar(origem, true);
+	Coordenada to = localizar(destino, true);
+	Coordenada *points = intercalar(from, to,2.0);
 
 	using namespace std;
 	for(int i = 0; i < 60; i++){
-		Point3D location = points[i];
-		cout << "x=" << location.x << " y=" << location.y << " z=" << location.z << endl;
+		Coordenada posicao = points[i];
+		cout << "x=" << posicao.x << " y=" << posicao.y << " z=" << posicao.z << endl;
 	}
 }
 
 void pointTest(){
-	Point3D point1, point2;
+	Coordenada point1, point2;
 	point1.x= 5;
 	point1.y = 5;
 	point1.z = 5;
@@ -163,5 +166,5 @@ void contextTest(){
 	using namespace std;
 }
 int main(){
-	contextTest();
+	movementTest();
 }

@@ -1,41 +1,41 @@
-Movement movement(Map newoccupation){
-	Map modifications = occupiedSquares ^ newoccupation;
-	Map originmap = modifications & occupiedSquares;
+Movimento movimento(Mapa novaOcupacao){
+	Mapa modificacoes = casasOcupadas ^ novaOcupacao;
+	Mapa mapaOrigem = modificacoes & casasOcupadas;
 }
 
-Map availableAttacks(Square origin){
-	int type = pieceType(origin);
-	int color = pieceColor(origin);
-	int opponent = 1 - color;
+Mapa ataquesDisponiveis(Casa origem){
+	int tipo = tipoPeca(origem);
+	int cor = corPeca(origem);
+	int oponente = 1 - cor;
 
-	Map attacks;
-	switch(type){
-		case PAWN:
-			attacks = pawnAttacks(occupiedSquares, origin, color == WHITE);
+	Mapa ataques;
+	switch(tipo){
+		case PEAO:
+			ataques = ataquesPeao(casasOcupadas, origem, cor == BRANCO);
 			break;
 
-		case ROOK:
-			attacks = rookAttacks(occupiedSquares, origin);
+		case TORRE:
+			ataques = ataquesTorre(casasOcupadas, origem);
 			break;
 
-		case KNIGHT:
-			attacks = knightAttacks(occupiedSquares, origin);
+		case CAVALO:
+			ataques = ataquesCavalo(casasOcupadas, origem);
 			break;
 
-		case BISHOP:
-			attacks = bishopAttacks(occupiedSquares, origin);
+		case BISPO:
+			ataques = ataquesBispo(casasOcupadas, origem);
 			break;
 
-		case QUEEN:
-			attacks = queenAttacks(occupiedSquares, origin);
+		case RAINHA:
+			ataques = ataquesRainha(casasOcupadas, origem);
 			break;
 
-		case KING:
-			attacks = kingAttacks(occupiedSquares, origin);
+		case REI:
+			ataques = ataquesRei(casasOcupadas, origem);
 			break;
 
 		default:
-			attacks = 0;
+			ataques = 0;
 	}
-	return attacks & pieces[opponent];	//ataca apenas pecas do oponente
+	return ataques & pecas[oponente];	//ataca apenas pecas do oponente
 }

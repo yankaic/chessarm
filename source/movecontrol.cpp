@@ -1,91 +1,91 @@
 #include "movecontrol.hpp"
 
-Point3D point(Square square, bool high){
-	Point3D location; //colocando a peca na posicao a0
-	location.x = BOARD_SQUARE * -3.5;
-	location.y = GAP_DISTANCE + BOARD_BORDER + BOARD_SQUARE / 2;
-	location.z = high ? HEIGHT_HIGH : HEIGHT_LOW;
+Coordenada localizar(Casa casa, bool high){
+	Coordenada posicao; //colocando a peca na posicao a0
+	posicao.x = TAMANHO_CASA * -3.5;
+	posicao.y = DISTANCIA_TABULEIRO_EO_ROBO + TAMANHO_BORDA + TAMANHO_CASA / 2;
+	posicao.z = high ? ALTURA_CIMA : ALTURA_BAIXO;
 
-	//colocando na posicao de acordo com square
-	location.x += square.column * BOARD_SQUARE;
-	location.y += square.line * BOARD_SQUARE;
-	return location;
+	//colocando na posicao de acordo com casa
+	posicao.x += casa.coluna * TAMANHO_CASA;
+	posicao.y += casa.fileira * TAMANHO_CASA;
+	return posicao;
 }	
 
 
-Point3D* intercalate(Point3D origin, Point3D destination, const double seconds){
-	Point3D difference;
-	difference.x = destination.x - origin.x;
-	difference.y = destination.y - origin.y;
-	difference.z = destination.z - origin.z;
+Coordenada* intercalar(Coordenada origem, Coordenada destino, const double segundos){
+	Coordenada diferenca;
+	diferenca.x = destino.x - origem.x;
+	diferenca.y = destino.y - origem.y;
+	diferenca.z = destino.z - origem.z;
 
-	Point3D point;
-	Point3D *pointers = new Point3D[(int)(FREQUENCY * seconds)]; 
+	Coordenada posicao;
+	Coordenada *coordenadas = new Coordenada[(int)(FREQUENCIA * segundos)]; 
 
-	double scale = 0, increment = 1.0 / (FREQUENCY * seconds);
+	double escala = 0, incremento = 1.0 / (FREQUENCIA * segundos);
 
-	for(int i = 0; scale <= 1; scale += increment, i++){
-		point.x = origin.x + difference.x * scale;
-		point.y = origin.y + difference.y * scale;
-		point.z = origin.z + difference.z * scale;
-		pointers[i] = point;
+	for(int i = 0; escala <= 1; escala += incremento, i++){
+		posicao.x = origem.x + diferenca.x * escala;
+		posicao.y = origem.y + diferenca.y * escala;
+		posicao.z = origem.z + diferenca.z * escala;
+		coordenadas[i] = posicao;
 	}
-	point.x = origin.x + difference.x * scale;
-	point.y = origin.y + difference.y * scale;
-	point.z = origin.z + difference.z * scale;
-	pointers[(int)(FREQUENCY * seconds) -1] = point;
+	posicao.x = origem.x + diferenca.x * escala;
+	posicao.y = origem.y + diferenca.y * escala;
+	posicao.z = origem.z + diferenca.z * escala;
+	coordenadas[(int)(FREQUENCIA * segundos) -1] = posicao;
 
-	return pointers;
+	return coordenadas;
 }
 
-void move(Movement move){
-	Point3D initialPosition, origin, originHigh, destination, destinationHigh;
+void movimento(Movimento movimento){
+	Coordenada posicaoInicial, origem, origemAlta, destino, DestinoAlto;
 
-	initialPosition.x = INITIAL_X;
-	initialPosition.y = INITIAL_Y;
-	initialPosition.z = INITIAL_Z;
+	posicaoInicial.x = X_INICIAL;
+	posicaoInicial.y = Y_INICIAL;
+	posicaoInicial.z = Z_INICIAL;
 
-	origin = point(move.origin, false);
-	originHigh = origin;
-	originHigh.z = HEIGHT_HIGH;
+	origem = localizar(movimento.origem, false);
+	origemAlta = origem;
+	origemAlta.z = ALTURA_CIMA;
 
-	destination = point(move.destination, false);
-	destinationHigh = destination;
-	destinationHigh.z = HEIGHT_HIGH;
+	destino = localizar(movimento.destino, false);
+	DestinoAlto = destino;
+	DestinoAlto.z = ALTURA_CIMA;
 
-	Point3D *prepareTakePath, *takePath, *returnTakePath, 
-		*prepareAttackPath, *attackPath, *returnAttackPath, *returnInitialPath;
+	Coordenada *trajetoPrepararCaptura, *trajetoCaptura, *trajetoVoltarCaptura, 
+		*trajetoPrepararAtaque, *trajetoAtaque, *trajetoVoltarAtaque, *trajetoVoltarInicial;
 
 	const double prepareTakeSeconds = 2, takeSeconds = 1, returnTakeSeconds = 1, 
 		prepareAttackSeconds = 2, attackSeconds = 1, returnAttackSeconds = 1, returnInitialSeconds = 3;
 
-	prepareTakePath 	= intercalate(initialPosition, 	originHigh,				prepareTakeSeconds);
-	takePath 					= intercalate(originHigh, 			origin, 					takeSeconds);
-	returnTakePath 		= intercalate(origin, 					originHigh, 			returnTakeSeconds);
-	prepareTakePath		= intercalate(originHigh, 			destinationHigh,	prepareTakeSeconds);
-	attackPath 				= intercalate(destinationHigh,	destination, 			attackSeconds);
-	returnAttackPath	= intercalate(destination, 			destinationHigh, 	returnAttackSeconds);
-	returnInitialPath = intercalate(destinationHigh, 	initialPosition, 	returnInitialSeconds);
+	trajetoPrepararCaptura 	= intercalar(posicaoInicial, 	origemAlta,				prepareTakeSeconds);
+	trajetoCaptura 					= intercalar(origemAlta, 			origem, 					takeSeconds);
+	trajetoVoltarCaptura 		= intercalar(origem, 					origemAlta, 			returnTakeSeconds);
+	trajetoPrepararCaptura		= intercalar(origemAlta, 			DestinoAlto,	prepareTakeSeconds);
+	trajetoAtaque 				= intercalar(DestinoAlto,	destino, 			attackSeconds);
+	trajetoVoltarAtaque	= intercalar(destino, 			DestinoAlto, 	returnAttackSeconds);
+	trajetoVoltarInicial = intercalar(DestinoAlto, 	posicaoInicial, 	returnInitialSeconds);
 
-	const bool OPENED_CLAW = true;
-	const bool CLOSED_CLAW = !OPENED_CLAW;
+	const bool GARRA_ABERTA = true;
+	const bool GARRA_FECHADA = !GARRA_ABERTA;
 
-	runPath(prepareTakePath,		prepareTakeSeconds * FREQUENCY,		OPENED_CLAW);
-	runPath(takePath, 					takeSeconds * FREQUENCY,					OPENED_CLAW);
-	runPath(returnTakePath, 		returnTakeSeconds * FREQUENCY,		CLOSED_CLAW);
-	runPath(prepareAttackPath,	prepareAttackSeconds * FREQUENCY,	CLOSED_CLAW);
-	runPath(attackPath, 				attackSeconds * FREQUENCY, 				CLOSED_CLAW);
-	runPath(returnAttackPath, 	returnAttackSeconds * FREQUENCY, 	OPENED_CLAW);
-	runPath(returnInitialPath, 	returnInitialSeconds * FREQUENCY,	OPENED_CLAW);
+	executarTrajeto(trajetoPrepararCaptura,		prepareTakeSeconds * FREQUENCIA,		GARRA_ABERTA);
+	executarTrajeto(trajetoCaptura, 					takeSeconds * FREQUENCIA,					GARRA_ABERTA);
+	executarTrajeto(trajetoVoltarCaptura, 		returnTakeSeconds * FREQUENCIA,		GARRA_FECHADA);
+	executarTrajeto(trajetoPrepararAtaque,	prepareAttackSeconds * FREQUENCIA,	GARRA_FECHADA);
+	executarTrajeto(trajetoAtaque, 				attackSeconds * FREQUENCIA, 				GARRA_FECHADA);
+	executarTrajeto(trajetoVoltarAtaque, 	returnAttackSeconds * FREQUENCIA, 	GARRA_ABERTA);
+	executarTrajeto(trajetoVoltarInicial, 	returnInitialSeconds * FREQUENCIA,	GARRA_ABERTA);
 }
 
-void runPath(Point3D *path, int size, bool claw){
-	float  base,  shoulder,  elbow,  wrist;
-	for(int i = 0; i < size; i++){
-		base = baseAngle(path[i]);
-		shoulder = shoulderAngle(path[i]);
-		elbow = elbowAngle(path[i]);
-		wrist = wristAngle(path[i]);
-		runAngles(base, shoulder, elbow, wrist, claw);
+void executarTrajeto(Coordenada *trajeto, int tamanho, bool garra){
+	float  base,  ombro,  cotovelo,  pulso;
+	for(int i = 0; i < tamanho; i++){
+		base = anguloBase(trajeto[i]);
+		ombro = anguloOmbro(trajeto[i]);
+		cotovelo = anguloCotovelo(trajeto[i]);
+		pulso = anguloPulso(trajeto[i]);
+		executarAngulos(base, ombro, cotovelo, pulso, garra);
 	}
 }
