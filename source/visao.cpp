@@ -12,6 +12,7 @@ void carregarAmostras();
 float distancia(Vec3b cor1, Vec3b cor2);
 void printVetor(Vec3b cor);
 void salvaCor(Mat imagem, const char* diretorio);
+Mat imagemCor(Mat imagem);
 
 const int BLUE = 0;
 const int GREEN = 1;
@@ -22,16 +23,23 @@ Vec3b pecaEscura;
 Vec3b casaClara;
 Vec3b casaEscura;
 
+Mat corPC, corPE, corCC, corCE, aproximacao;
+
 Mapa carregarImagem(){
 	carregarAmostras();
 	Mat imagem;
 	imagem = imread("./resource/input/tabuleiro.jpg");
 	imagem = enquadrarImagem(imagem);
-	Mat casa, centro;
+	Mat casa, centro, tabuleiroCores, corquadrado, corAproximacao = corCE;
 	Vec3b cor;
 	Mapa mapa = 0;
-	float dpc, dpe, dcc, dce;
+	int dpc, dpe, dcc, dce;
 	char dir[] = "./resource/input/pecas/pfc.jpg";
+	resize(imagem, tabuleiroCores, Size(800, 800), 0, 0);
+	resize(aproximacao, aproximacao, Size(800, 800), 0, 0);
+	Rect quadrado;
+	quadrado.width = 100;
+	quadrado.height = 100;
 
 	for(int fileira = 0; fileira < 8; fileira ++){
 		for (int coluna = 0; coluna < 8; coluna++){
@@ -43,22 +51,44 @@ Mapa carregarImagem(){
 			dpe = distancia(cor, pecaEscura);
 			dcc = distancia(cor, casaClara);
 			dce = distancia(cor, casaEscura);
-			float menor = min(min(min(dpc, dpe),dcc),dce);
-			if(menor==dpc || menor==dpe){
-			 	mapa |= mapear(fileira, coluna);
+			int menor = min(min(min(dpc, dpe),dcc),dce);
+
+	 		if(menor==dpc){
+		 		mapa |= mapear(fileira, coluna);
+		 		corAproximacao = corPC;
+	 		}
+	 		if(menor==dpe){
+		 		mapa |= mapear(fileira, coluna);
+		 		corAproximacao = corPE;
+	 		}
+	 		if(menor==dcc){
+		 		corAproximacao = corCC;
+	 		}
+	 		if(menor==dce){
+		 		corAproximacao = corCE;
 	 		}
 
 	 		//salvando resultados
-	 		dir[23] = 'p';
+	 		dir[23] = 'a';
 			dir[24] = '0'+7-fileira;
 			dir[25] = '0'+coluna;
 			imwrite(dir, casa);
-			dir[23] = 'c';
+			dir[23] = 'b';
 			imwrite(dir, centro);
+
+			corquadrado = imagemCor(centro);
+			quadrado.x = coluna * 100;
+			quadrado.y = (7- fileira) * 100;
+			corquadrado.copyTo(tabuleiroCores(quadrado));
+			corAproximacao.copyTo(aproximacao(quadrado));
 		}
 	}
+	imwrite("./resource/input/tabuleiroCores.jpg",tabuleiroCores);
+	imwrite("./resource/input/tabuleiroCoresAp.jpg",aproximacao);
 	return mapa;
 }
+
+
 
 void nada(){
 	// 	using namespace std;
@@ -94,28 +124,34 @@ void carregarAmostras(){
 	imagem = imread("./resource/input/amostraPecaClara.jpg");
 	imagem = dividirImagem(imagem, 3, 1,1);
 	pecaClara = corGeral(imagem);
+	corPC = imagemCor(imagem);
 	salvaCor(imagem, "./resource/input/corPecaClara.jpg");
 
 	imagem = imread("./resource/input/amostraPecaEscura.jpg");
 	imagem = dividirImagem(imagem, 3, 1,1);
 	pecaEscura = corGeral(imagem);
+	corPE = imagemCor(imagem);
 	salvaCor(imagem, "./resource/input/corPecaEscura.jpg");
 
 	imagem = imread("./resource/input/amostraCasaClara.jpg");
 	imagem = dividirImagem(imagem, 3, 1,1);
 	casaClara = corGeral(imagem);
+	corCC = imagemCor(imagem);
 	salvaCor(imagem, "./resource/input/corCasaClara.jpg");
 
 	imagem = imread("./resource/input/amostraCasaEscura.jpg");
 	imagem = dividirImagem(imagem, 3, 1,1);
-	casaEscura = corGeral(imagem);
+	casaEscura = corGeral(imagem);	
+	corCE = imagemCor(imagem);
 	salvaCor(imagem, "./resource/input/corCasaEscura.jpg");
+
+	aproximacao = imagemCor(imagem);
 }
 
 float distancia(Vec3b cor1, Vec3b cor2){
 	float distancia = pow(cor2.val[RED] - cor1.val[RED], 2);
-	distancia += pow(cor2.val[GREEN] - cor1.val[GREEN], 2);
-	distancia += pow(cor2.val[BLUE] - cor1.val[BLUE], 2);
+	distancia += pow(cor2.val[GREEN] - cor1.val[GREEN], 2)*2.5;
+	distancia += pow(cor2.val[BLUE] - cor1.val[BLUE], 2)*2.5;
 	return sqrt(distancia);
 }
 
@@ -156,3 +192,11 @@ void salvaCor(Mat imagem,const char* diretorio){
 	resize(pixel, imagem, Size(100, 100), 0, 0);
 	imwrite(diretorio, imagem);
 }
+
+Mat imagemCor(Mat imagem){
+	Mat pixel;
+	resize(imagem, pixel, Size(1, 1), 0, 0);	
+	resize(pixel, imagem, Size(100, 100), 0, 0);
+	return imagem;
+}
+
