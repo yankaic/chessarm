@@ -19,7 +19,7 @@ const unsigned char isFile =0x8;
 
 void splitBoard(char* dir);
 
-int main(int argc, char** argv ){
+void principal(){
 
   DIR *dir;
   struct dirent *lsdir;
@@ -37,8 +37,6 @@ int main(int argc, char** argv ){
     }
   }
   closedir(dir);
-
-	return 0;
 }
 
 void splitBoard(char* dir){
@@ -51,16 +49,16 @@ void splitBoard(char* dir){
 
 	//casa
 	Rect roi;
-    roi.width = image.tamanho().width;
-    roi.height = image.tamanho().height;
+    roi.width = image.size().width;
+    roi.height = image.size().height;
 
     roi.x = roi.width - roi.height ;
     roi.x = max(roi.x / 2, 0);
     roi.y = roi.height - roi.width;
     roi.y = max(roi.y / 2, 0);
 
-    roi.width = min(image.tamanho().width, image.tamanho().height);
-    roi.height = min(image.tamanho().width, image.tamanho().height);
+    roi.width = min(image.size().width, image.size().height);
+    roi.height = min(image.size().width, image.size().height);
     Mat casa = image(roi);
 	resize(casa, image, Size(SLICES * CELL_SIZE, SLICES * CELL_SIZE), 0, 0);
 	

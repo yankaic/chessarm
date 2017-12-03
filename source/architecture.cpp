@@ -10,7 +10,9 @@
 #include "recognizer.cpp"
 #endif
 
+
 #include "movecontrol.cpp"
+#include "visao.cpp"
 
 void printMap(char* text){	
 	//std::cout << "linear: " << text << std::endl;
@@ -165,6 +167,11 @@ void contextTest(){
 	int variable = 5;
 	using namespace std;
 }
+
+void imagemTest(){
+	Mapa mapa = carregarImagem();
+	printMap(toString(mapa));
+}
 int main(){
-	movementTest();
+	imagemTest();
 }
