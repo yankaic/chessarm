@@ -2,7 +2,13 @@
 #define OPENCVLIB
 #include <opencv2/opencv.hpp>
 #include "opencv/highgui.h"
+#include <sstream>
+#include <iostream>
+#include <dirent.h>
 #endif
+
+
+#include <string>
 
 using namespace cv;
 Mat enquadrarImagem(Mat imagem);
@@ -10,7 +16,7 @@ Mat dividirImagem(Mat imagem, int quantidade, int fileira, int coluna);
 Vec3b corGeral(Mat imagem);
 void carregarAmostras();
 float distancia(Vec3b cor1, Vec3b cor2);
-void printVetor(Vec3b cor);
+void printVetor(Vec3i cor);
 void salvaCor(Mat imagem, const char* diretorio);
 Mat imagemCor(Mat imagem);
 
@@ -18,23 +24,23 @@ const int BLUE = 0;
 const int GREEN = 1;
 const int RED = 2;
 
-Vec3b pecaClara;
-Vec3b pecaEscura;
-Vec3b casaClara;
-Vec3b casaEscura;
+Vec3b corPecaClara;
+Vec3b corPecaEscura;
+Vec3b corCasaClara;
+Vec3b corCasaEscura;
 
-Mat corPC, corPE, corCC, corCE, aproximacao;
+Mat pecaClara, pecaEscura, casaClara, casaEscura, aproximacao;
 
 Mapa carregarImagem(){
 	carregarAmostras();
 	Mat imagem;
-	imagem = imread("./resource/input/tabuleiro.jpg");
+	imagem = imread("./resource/tabuleiro.jpg");
 	imagem = enquadrarImagem(imagem);
-	Mat casa, centro, tabuleiroCores, corquadrado, corAproximacao = corCE;
+	Mat casa, centro, tabuleiroCores, corquadrado, corAproximacao = casaEscura;
 	Vec3b cor;
 	Mapa mapa = 0;
 	int dpc, dpe, dcc, dce;
-	char dir[] = "./resource/input/pecas/pfc.jpg";
+	char dir[] = "./resource/pecas/pfc.jpg";
 	resize(imagem, tabuleiroCores, Size(800, 800), 0, 0);
 	resize(aproximacao, aproximacao, Size(800, 800), 0, 0);
 	Rect quadrado;
@@ -47,33 +53,34 @@ Mapa carregarImagem(){
 			centro = dividirImagem(casa, 3, 1,1);
 			cor = corGeral(centro);
 
-			dpc = distancia(cor, pecaClara);
-			dpe = distancia(cor, pecaEscura);
-			dcc = distancia(cor, casaClara);
-			dce = distancia(cor, casaEscura);
+			dpc = distancia(cor, corPecaClara);
+			dpe = distancia(cor, corPecaEscura);
+			dcc = distancia(cor, corCasaClara);
+			dce = distancia(cor, corCasaEscura);
 			int menor = min(min(min(dpc, dpe),dcc),dce);
 
-	 		if(menor==dpc){
-		 		mapa |= mapear(fileira, coluna);
-		 		corAproximacao = corPC;
-	 		}
-	 		if(menor==dpe){
-		 		mapa |= mapear(fileira, coluna);
-		 		corAproximacao = corPE;
-	 		}
+
 	 		if(menor==dcc){
-		 		corAproximacao = corCC;
+		 		corAproximacao = casaClara;
 	 		}
-	 		if(menor==dce){
-		 		corAproximacao = corCE;
+	 		else if(menor==dce){
+		 		corAproximacao = casaEscura;
+	 		}
+	 		else if(menor==dpc){
+		 		mapa |= mapear(fileira, coluna);
+		 		corAproximacao = pecaClara;
+	 		}
+	 		else if(menor==dpe){
+		 		mapa |= mapear(fileira, coluna);
+		 		corAproximacao = pecaEscura;
 	 		}
 
 	 		//salvando resultados
-	 		dir[23] = 'a';
-			dir[24] = '0'+7-fileira;
-			dir[25] = '0'+coluna;
+	 		dir[17] = 'a';
+			dir[18] = '0'+7-fileira;
+			dir[19] = '0'+coluna;
 			imwrite(dir, casa);
-			dir[23] = 'b';
+			dir[17] = 'b';
 			imwrite(dir, centro);
 
 			corquadrado = imagemCor(centro);
@@ -83,37 +90,75 @@ Mapa carregarImagem(){
 			corAproximacao.copyTo(aproximacao(quadrado));
 		}
 	}
-	imwrite("./resource/input/tabuleiroCores.jpg",tabuleiroCores);
-	imwrite("./resource/input/tabuleiroCoresAp.jpg",aproximacao);
+	imwrite("./resource/tabuleiroCores.jpg",tabuleiroCores);
+	imwrite("./resource/tabuleiroCoresAp.jpg",aproximacao);
 	return mapa;
 }
 
+void treinar(){
+	DIR *dir;
+	struct dirent *lsdir;
+	dir = opendir("./resource/treino");	
+	const unsigned char isFile =0x8;
+
+	int countCC, countCE, countPC, countPE;
+	countPE = countPC = countCE = countCC = 0;
+	Vec3i mediaCC, mediaCE, mediaPC, mediaPE;
+	Mat amostra;
 
 
-void nada(){
-	// 	using namespace std;
-	// cout << "dpc= " << dpc << endl;
-	// cout << "dpe= " << dpe << endl;
-	// cout << "dcc= " << dcc << endl;
-	// cout << "dce= " << dce << endl;
+	while((lsdir = readdir(dir)) != NULL){
+		if(strcmp(lsdir->d_name, ".")!=0 && strcmp(lsdir->d_name, "..")
+		 &&  lsdir->d_type == isFile){
+			std::string filename = "./resource/treino/";
+			filename += lsdir->d_name;
+    	amostra = imread(filename.c_str());
+    	amostra = dividirImagem(amostra, 3, 1, 1);
+    	Vec3b corint = corGeral(amostra);
 
-	// if(menor==dpc){
-	// 	cout << "Peca clara" << endl;
-	// }
-	// if(menor==dpe){
-	// 	cout << "Peca escura" << endl;
-	// }
-	// if(menor==dcc){
-	// 	cout << "Casa clara" << endl;
-	// }
-	// if(menor==dce){
-	// 	cout << "Casa escura" << endl;
-	// }
+    	if(lsdir->d_name[0]=='p' && lsdir->d_name[1]=='c'){
+    		mediaPC += corint;
+    		countPC++;
+    	}
+    	if(lsdir->d_name[0]=='p' && lsdir->d_name[1]=='e'){
+    		mediaPE += corint;
+    		countPE++;
+    	}
+    	if(lsdir->d_name[0]=='c' && lsdir->d_name[1]=='c'){
+    		mediaCC += corint;
+    		countCC++;
+    	}
+    	if(lsdir->d_name[0]=='c' && lsdir->d_name[1]=='e'){
+    		mediaCE += corint;
+    		countCE++;
+    	}
+		}
+	}
+	mediaCE /= countCE;
+	mediaCC /= countCC;
+	mediaPE /= countPE;
+	mediaPC /= countPC;
+	Mat imgReduzida;
+	resize(amostra, imgReduzida, Size(1, 1), 0, 0);	
+
+	imgReduzida.at<Vec3b>(0,0) = mediaCC;
+	resize(imgReduzida, amostra, Size(100, 100), 0, 0);
+	imwrite("./resource/casaClara.jpg",amostra);
+
+	imgReduzida.at<Vec3b>(0,0) = mediaCE;
+	resize(imgReduzida, amostra, Size(100, 100), 0, 0);
+	imwrite("./resource/casaEscura.jpg",amostra);
+
+	imgReduzida.at<Vec3b>(0,0) = mediaPC;
+	resize(imgReduzida, amostra, Size(100, 100), 0, 0);
+	imwrite("./resource/pecaClara.jpg",amostra);
+
+	imgReduzida.at<Vec3b>(0,0) = mediaPE;
+	resize(imgReduzida, amostra, Size(100, 100), 0, 0);
+	imwrite("./resource/pecaEscura.jpg",amostra);
 }
 
-
-
-void printVetor(Vec3b cor){
+void printVetor(Vec3i cor){
 	std::cout << " r= " << cor.val[RED];
 	std::cout << " g= " << cor.val[GREEN];
 	std::cout << " b= " << cor.val[BLUE] << std::endl;
@@ -121,37 +166,29 @@ void printVetor(Vec3b cor){
 
 void carregarAmostras(){
 	Mat imagem;
-	imagem = imread("./resource/input/amostraPecaClara.jpg");
-	imagem = dividirImagem(imagem, 3, 1,1);
-	pecaClara = corGeral(imagem);
-	corPC = imagemCor(imagem);
-	salvaCor(imagem, "./resource/input/corPecaClara.jpg");
+	imagem = imread("./resource/pecaClara.jpg");
+	corPecaClara = corGeral(imagem);
+	pecaClara = imagemCor(imagem);
 
-	imagem = imread("./resource/input/amostraPecaEscura.jpg");
-	imagem = dividirImagem(imagem, 3, 1,1);
-	pecaEscura = corGeral(imagem);
-	corPE = imagemCor(imagem);
-	salvaCor(imagem, "./resource/input/corPecaEscura.jpg");
+	imagem = imread("./resource/pecaEscura.jpg");
+	corPecaEscura = corGeral(imagem);
+	pecaEscura = imagemCor(imagem);
 
-	imagem = imread("./resource/input/amostraCasaClara.jpg");
-	imagem = dividirImagem(imagem, 3, 1,1);
-	casaClara = corGeral(imagem);
-	corCC = imagemCor(imagem);
-	salvaCor(imagem, "./resource/input/corCasaClara.jpg");
+	imagem = imread("./resource/casaClara.jpg");
+	corCasaClara = corGeral(imagem);
+	casaClara = imagemCor(imagem);
 
-	imagem = imread("./resource/input/amostraCasaEscura.jpg");
-	imagem = dividirImagem(imagem, 3, 1,1);
-	casaEscura = corGeral(imagem);	
-	corCE = imagemCor(imagem);
-	salvaCor(imagem, "./resource/input/corCasaEscura.jpg");
+	imagem = imread("./resource/casaEscura.jpg");
+	corCasaEscura = corGeral(imagem);	
+	casaEscura = imagemCor(imagem);
 
 	aproximacao = imagemCor(imagem);
 }
 
 float distancia(Vec3b cor1, Vec3b cor2){
 	float distancia = pow(cor2.val[RED] - cor1.val[RED], 2);
-	distancia += pow(cor2.val[GREEN] - cor1.val[GREEN], 2)*2.5;
-	distancia += pow(cor2.val[BLUE] - cor1.val[BLUE], 2)*2.5;
+	distancia += pow(cor2.val[GREEN] - cor1.val[GREEN], 2);
+	distancia += pow(cor2.val[BLUE] - cor1.val[BLUE], 2);
 	return sqrt(distancia);
 }
 
@@ -181,22 +218,22 @@ Mat dividirImagem(Mat imagem, int quantidade, int fileira, int coluna){
 }
 
 Vec3b corGeral(Mat imagem){
-	Mat pixel;
-	resize(imagem, pixel, Size(1, 1), 0, 0);
-	return pixel.at<Vec3b>(0, 0);
+	Mat imgReduzida;
+	resize(imagem, imgReduzida, Size(1, 1), 0, 0);
+	return imgReduzida.at<Vec3b>(0, 0);
 }
 
 void salvaCor(Mat imagem,const char* diretorio){
-	Mat pixel;
-	resize(imagem, pixel, Size(1, 1), 0, 0);	
-	resize(pixel, imagem, Size(100, 100), 0, 0);
+	Mat imgReduzida;
+	resize(imagem, imgReduzida, Size(1, 1), 0, 0);	
+	resize(imgReduzida, imagem, Size(100, 100), 0, 0);
 	imwrite(diretorio, imagem);
 }
 
 Mat imagemCor(Mat imagem){
-	Mat pixel;
-	resize(imagem, pixel, Size(1, 1), 0, 0);	
-	resize(pixel, imagem, Size(100, 100), 0, 0);
+	Mat imgReduzida;
+	resize(imagem, imgReduzida, Size(1, 1), 0, 0);	
+	resize(imgReduzida, imagem, Size(100, 100), 0, 0);
 	return imagem;
 }
 

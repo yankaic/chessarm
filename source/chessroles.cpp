@@ -127,10 +127,12 @@ Mapa ataquesDirecionado	(Mapa ocupadas, Casa casa, Vetor vector){
 	Mapa proximoAtaque, ataques = 0;
 
 	do{
-		proximoAtaque = mapear(casa.fileira + vector.y * escala, casa.coluna + vector.x * escala);
+		proximoAtaque = mapear(casa.fileira + vector.y * escala, 
+													 casa.coluna + vector.x * escala);
 		ataques |= proximoAtaque;
 		escala++;
-	}while((proximoAtaque & ocupadas) != proximoAtaque); //continua enquanto não encontrar obstaculo ou não sair do tabuleiro
+	}while((proximoAtaque & ocupadas) != proximoAtaque); 
+	//continua enquanto não encontrar obstaculo ou não sair do tabuleiro
 
 	return ataques;	
 }

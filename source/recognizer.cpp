@@ -1,6 +1,20 @@
-Movimento movimento(Mapa novaOcupacao){
+Movimento descobrirMovimento(Mapa novaOcupacao){
 	Mapa modificacoes = casasOcupadas ^ novaOcupacao;
-	Mapa mapaOrigem = modificacoes & casasOcupadas;
+	Mapa origem = modificacoes & casasOcupadas;
+	Mapa destino;
+	if(contar(modificacoes) == 2){
+		destino = modificacoes & ~casasOcupadas;
+	}
+	else{		
+		int cor = corPeca(origem);
+		int oponente = 1 - cor;
+		destino = ataquesDisponiveis(origem) & pecas[oponente];
+	}
+
+	Movimento movimento;
+	movimento.origem = localizacao(origem);
+	movimento.destino = localizacao(destino);
+	return movimento;
 }
 
 Mapa ataquesDisponiveis(Casa origem){

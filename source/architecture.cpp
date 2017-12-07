@@ -172,6 +172,10 @@ void imagemTest(){
 	Mapa mapa = carregarImagem();
 	printMap(toString(mapa));
 }
-int main(){
+
+void treinaImagem(){
 	imagemTest();
+}
+int main(){
+	treinaImagem();
 }

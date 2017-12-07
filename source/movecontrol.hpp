@@ -27,5 +27,5 @@ Coordenada localizar(Casa casa, bool isHigh);
 
 Coordenada* intercalar(Coordenada origem, Coordenada destino, const double segundos);
 
-void movimento(Movimento movimento);
+void mover(Movimento movimento);
 void executarTrajeto(Coordenada *trajeto, int tamanho, bool garra);

@@ -3,7 +3,7 @@
 #include "board.cpp"
 #endif
 
-Movimento movimento(Mapa novaOcupacao);
+Movimento descobrirMovimento(Mapa novaOcupacao);
 
 Mapa ataquesDisponiveis(Casa origem);
 
